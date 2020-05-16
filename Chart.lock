@@ -1,0 +1,9 @@
+dependencies:
+- name: mysql
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 1.6.3
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 10.6.13
+digest: sha256:836f3b8d5d6e937f4fc0734cc4f16a58e455fd73f0844f11d773a2bcd744d2c7
+generated: "2020-05-16T14:03:59.900807+10:00"
