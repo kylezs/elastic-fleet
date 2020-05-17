@@ -4,6 +4,7 @@ description: A chart for launching Kolide Fleet
 keywords:
   - osquery
   - kolide
+icon: "https://image.flaticon.com/icons/png/512/130/130304.png"
 
 dependencies:
   - name: "mysql"

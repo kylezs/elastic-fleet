@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "kolide-fleet.fullname" . }}
+data:
+  config.yml: |-
+    mysql:
+      protocol: tcp
+      address: kf-mysql:3306
+      username: kolide
+      # handled as a secret
+      # password: kolide
+      database: kolide
+      tls_cert: ""
+      tls_key: ""
+      tls_ca: ""
+      tls_server_name: ""
+      tls_config: ""
+      max_open_conns: 50
+      max_idle_conns: 50
+    redis:
+      address: kf-redis-master:6379
+      cluster.slaveCount: 0
+      master.persistence.enabled: false
+      usePassword: false
+    server:
+      address: 0.0.0.0:8080
+      cert: ./tools/osquery/kolide.crt
+      key: ./tools/osquery/kolide.key
+      tls: true
+      tlsprofile: modern
+      url_prefix: ""
+    auth:
+      jwt_key: ""
+      bcrypt_cost: 12
+      salt_key_size: 24
+    app:
+      token_key_size: 24
+      invite_token_validity_period: 120h0m0s
+    session:
+      key_size: 64
+      duration: 2160h0m0s
+    osquery:
+      node_key_size: 24
+      status_log_plugin: filesystem
+      result_log_plugin: filesystem
+      label_update_interval: 1h0m0s
+      detail_update_interval: 1h0m0s
+      enable_log_rotation: false
+    logging:
+      debug: {{ default false .Values.fleet.logging.debug }}
+      json: {{ default false .Values.fleet.logging.json }}
+      disable_banner: {{ default false .Values.fleet.logging.disable_banner }}
+    filesystem:
+      status_log_file: /dev/stdout
+      result_log_file: /dev/stdout
+      enable_log_rotation: false

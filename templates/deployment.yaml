@@ -3,11 +3,12 @@ kind: Deployment
 metadata:
   name: {{ include "kolide-fleet.fullname" . }}
   labels:
+    app: {{ template "kolide-fleet.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
     {{- include "kolide-fleet.labels" . | nindent 4 }}
 spec:
-{{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-{{- end }}
   selector:
     matchLabels:
       {{- include "kolide-fleet.selectorLabels" . | nindent 6 }}
@@ -27,35 +28,49 @@ spec:
       serviceAccountName: {{ include "kolide-fleet.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: fleet-configuration
+          configMap:
+            name: {{ template "kolide-fleet.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
+          env:
+            - name: KOLIDE_AUTH_JWT_KEY
+              # value: jwt_key-env
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "kolide-fleet.fullname" . }}
+                  key: fleet.auth.jwt_key
+            - name: KOLIDE_MYSQL_USERNAME
+              # value: kolide
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "kolide-fleet.fullname" . }}
+                  key: fleet.mysql.username
+            - name: KOLIDE_MYSQL_PASSWORD
+              # value: mysqlPassword
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "kolide-fleet.fullname" . }}
+                  key: fleet.mysql.password
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "fleet"
+            - "serve"
+            - "--config"
+            - "/etc/fleet/config.yml"
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 443
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: fleet-configuration
+              readOnly: true
+              mountPath: /etc/fleet
       {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
       {{- end }}
