@@ -25,9 +25,9 @@ data:
       usePassword: false
     server:
       address: 0.0.0.0:8080
-      cert: ./tools/osquery/kolide.crt
-      key: ./tools/osquery/kolide.key
-      tls: true
+      cert: /etc/pki/fleet/tls.crt
+      key: /etc/pki/fleet/tls.key
+      tls: {{ default true .Values.fleet.server.tls }}
       tlsprofile: modern
       url_prefix: ""
     auth:

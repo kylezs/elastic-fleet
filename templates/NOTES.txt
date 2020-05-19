@@ -1,1 +1,63 @@
-1. Get the application URL by running these commands:
+# templates/NOTES.txt:1-22
+fleet
+{{ if eq .Values.tls.generate false }}
+## Generating the TLS certificates
+If you have just installed kolide/fleet, you will need to generate TLS certficates in the appropriate format:
+---
+  apiVersion: v1
+  data:
+    tls.crt: __BASE64_TLS_CERTIFICATE__
+    tls.key: __BASE64_TLS_KEY__
+  kind: Secret
+  metadata:
+    name: {{ template "kolide-fleet.fullname" . }}-tls
+  type: kubernetes.io/tls
+ 
+Checkout the jetstack cert manager project for automated cert creation in the appropriate format.
+{{ end -}}
+## Accessing kolide-fleet
+----------------------
+1. Get the kolide-fleet URL to visit by running these commands in the same shell:
+{{- if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ template "kolide-fleet.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT/login
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  NOTE: It may take a few minutes for the loadBalancer IP to be available.
+        You can watch the status of by running 'kubectl get svc --namespace {{ .Release.Namespace }} -w {{ template "kolide-fleet.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc {{ template "kolide-fleet.fullname" . }} --namespace {{ .Release.Namespace }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.service.port }}/login
+{{- else if contains "ClusterIP"  .Values.service.type }}
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "component={{ template "kolide-fleet.fullname" . }}-master" -o jsonpath="{.items[0].metadata.name}")
+  echo http://127.0.0.1:{{ .Values.service.port }}
+  kubectl port-forward $POD_NAME {{ .Values.service.port }}:{{ .Values.service.port }}
+{{- end }}
+For more information, check the readme!
+
+Checkout the jetstack cert manager project for automated cert creation in the appropriate format. Alternatively for
+testing purposes a self signed certificate can be generated with the following command:
+$ openssl req -x509 \
+    -newkey rsa:4096 \
+    -keyout key.pem \
+    -out cert.pem \
+    -days 365 \
+    -nodes \
+    -subj "/C=EU/ST=Hessen/L=Frankfurt/O=AcmeWidgets Name/OU=Org/CN=__FILL_IN_YOUR_DOMAIN_HERE__"
+$ cat <<EOF | kubectl apply -f -
+  ---
+  apiVersion: v1
+  data:
+    tls.crt: $(cat cert.pem | base64 -w 0)
+    tls.key: $(cat key.pem | base64 -w 0)
+  kind: Secret
+  metadata:
+    name: kf-kolide-fleet-tls
+  type: kubernetes.io/tls
+  EOF
+This isn't a super elegant way of doing PKI, it's recommended *not* to use this in a production environment. However,
+for testing purposes it's fine.
+$ rm cert.pem key.pem
+
+## Installation
+If you have just installed kolide/kolide-fleet, the view will prompt you for further installation instructions. These cannot be
+automated during installation; you will need to complete them now.

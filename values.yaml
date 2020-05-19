@@ -44,7 +44,7 @@ securityContext:
 
 service:
   type: NodePort
-  port: 80
+  port: 8080
 
 resources:
   {}
@@ -74,6 +74,11 @@ fleet:
     debug: false
     json: true
     disable_banner: true
+  server:
+    tls: true
+
+tls:
+  generate: false
 
 mysql:
   # This is required
