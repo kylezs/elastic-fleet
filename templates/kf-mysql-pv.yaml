@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  # This is the name used by the quickstart guide
+  name: kf-mysql-pv
+  annotations:
+    meta.helm.sh/release-name: kf
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/managed-by: Helm
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: standard
+  hostPath:
+    path: /Users/kaz/mysql/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kf-mysql-pvc
+  annotations:
+    meta.helm.sh/release-name: kf
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/managed-by: Helm
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

@@ -5,5 +5,14 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 10.6.13
-digest: sha256:836f3b8d5d6e937f4fc0734cc4f16a58e455fd73f0844f11d773a2bcd744d2c7
-generated: "2020-05-16T14:03:59.900807+10:00"
+- name: elasticsearch
+  repository: https://helm.elastic.co
+  version: 7.7.0
+- name: kibana
+  repository: https://helm.elastic.co
+  version: 7.7.0
+- name: filebeat
+  repository: https://helm.elastic.co
+  version: 7.7.0
+digest: sha256:4b017598c212efb0b1b8aca446636c307247f991ec987f7d5ea2fc562a761219
+generated: "2020-05-24T10:59:33.114181+10:00"

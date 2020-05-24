@@ -43,8 +43,10 @@ securityContext:
   # runAsUser: 1000
 
 service:
+  name: fleet-nodeport
   type: NodePort
   port: 8080
+
 
 resources:
   {}
@@ -84,6 +86,8 @@ mysql:
   # This is required
   mysqlPassword: mysqlPasswordClearText
   mysqlDatabase: kolideClearText
+  persistence:
+    existingClaim: kf-mysql-pvc
 
 redis:
   cluster:
@@ -92,3 +96,26 @@ redis:
     persistence:
       enabled: false
   usePassword: false
+
+elasticsearch:
+  replicas: 1
+
+
+filebeat:
+  filebeatConfig:
+    filebeat.yml: |
+      filebeat.inputs:
+      - type: container
+        paths:
+          - /var/log/containers/kf-kolide-fleet*.log
+        json.message_key: log
+        json.keys_under_root: true
+      output.elasticsearch:
+        host: '${NODE_NAME}'
+        hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
+
+
+
+# processors:
+#   - decode_json_fields:
+#       fields: ["message"]

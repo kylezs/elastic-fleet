@@ -1,0 +1,1369 @@
+NAME: kf
+LAST DEPLOYED: Tue May 19 20:43:08 2020
+NAMESPACE: default
+STATUS: pending-install
+REVISION: 1
+USER-SUPPLIED VALUES:
+args:
+- --config
+- /etc/fleet/config.yml
+autoscaling:
+  enabled: false
+  maxReplicas: 1
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+fleet:
+  auth:
+    jwt_key: jwt_key
+  logging:
+    debug: false
+    disable_banner: true
+    json: true
+  server:
+    tls: true
+fullnameOverride: ""
+image:
+  pullPolicy: IfNotPresent
+  repository: kolide/fleet
+  tag: latest
+imagePullSecrets: []
+mysql:
+  mysqlDatabase: kolide
+  mysqlPassword: mysqlPassword
+  mysqlUser: kolide
+nameOverride: ""
+podAnnotations: {}
+podSecurityContext: {}
+redis:
+  cluster:
+    slaveCount: 0
+  master:
+    persistence:
+      enabled: false
+  redisPassword: redisPassword
+  usePassword: false
+replicaCount: 1
+resources: {}
+securityContext: {}
+service:
+  port: 80
+  type: NodePort
+serviceAccount:
+  annotations: {}
+  create: true
+  name: ""
+tls:
+  generate: false
+
+COMPUTED VALUES:
+args:
+- --config
+- /etc/fleet/config.yml
+autoscaling:
+  enabled: false
+  maxReplicas: 1
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+fleet:
+  auth:
+    jwt_key: jwt_key
+  logging:
+    debug: false
+    disable_banner: true
+    json: true
+  server:
+    tls: true
+fullnameOverride: ""
+image:
+  pullPolicy: IfNotPresent
+  repository: kolide/fleet
+  tag: latest
+imagePullSecrets: []
+mysql:
+  affinity: {}
+  args: []
+  busybox:
+    image: busybox
+    tag: 1.29.3
+  configurationFiles: {}
+  configurationFilesPath: /etc/mysql/conf.d/
+  deploymentAnnotations: {}
+  extraInitContainers: |
+    # - name: do-something
+    #   image: busybox
+    #   command: ['do', 'something']
+  extraVolumeMounts: |
+    # - name: extras
+    #   mountPath: /usr/share/extras
+    #   readOnly: true
+  extraVolumes: |
+    # - name: extras
+    #   emptyDir: {}
+  global: {}
+  image: mysql
+  imagePullPolicy: IfNotPresent
+  imageTag: 5.7.28
+  initContainer:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+  initializationFiles: {}
+  livenessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  metrics:
+    annotations: {}
+    enabled: false
+    flags: []
+    image: prom/mysqld-exporter
+    imagePullPolicy: IfNotPresent
+    imageTag: v0.10.0
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    readinessProbe:
+      initialDelaySeconds: 5
+      timeoutSeconds: 1
+    resources: {}
+    serviceMonitor:
+      additionalLabels: {}
+      enabled: false
+  mysqlDatabase: kolide
+  mysqlPassword: mysqlPassword
+  mysqlUser: kolide
+  nodeSelector: {}
+  persistence:
+    accessMode: ReadWriteOnce
+    annotations: {}
+    enabled: true
+    size: 8Gi
+  podAnnotations: {}
+  podLabels: {}
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  securityContext:
+    enabled: false
+    fsGroup: 999
+    runAsUser: 999
+  service:
+    annotations: {}
+    port: 3306
+    type: ClusterIP
+  serviceAccount:
+    create: false
+  ssl:
+    enabled: false
+    secret: mysql-ssl-certs
+  strategy:
+    type: Recreate
+  testFramework:
+    enabled: true
+    image: dduportal/bats
+    tag: 0.4.0
+  tolerations: []
+nameOverride: ""
+podAnnotations: {}
+podSecurityContext: {}
+redis:
+  cluster:
+    enabled: true
+    slaveCount: 0
+  clusterDomain: cluster.local
+  configmap: |-
+    # Enable AOF https://redis.io/topics/persistence#append-only-file
+    appendonly yes
+    # Disable RDB persistence, AOF persistence already enabled.
+    save ""
+  global:
+    redis: {}
+  image:
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: bitnami/redis
+    tag: 6.0.1-debian-10-r1
+  master:
+    affinity: {}
+    command: /run.sh
+    customLivenessProbe: {}
+    customReadinessProbe: {}
+    disableCommands:
+    - FLUSHDB
+    - FLUSHALL
+    extraFlags: []
+    livenessProbe:
+      enabled: true
+      failureThreshold: 5
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 5
+    persistence:
+      accessModes:
+      - ReadWriteOnce
+      enabled: false
+      matchExpressions: {}
+      matchLabels: {}
+      path: /data
+      size: 8Gi
+      subPath: ""
+    podAnnotations: {}
+    podLabels: {}
+    priorityClassName: {}
+    readinessProbe:
+      enabled: true
+      failureThreshold: 5
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 1
+    service:
+      annotations: {}
+      labels: {}
+      port: 6379
+      type: ClusterIP
+    statefulset:
+      updateStrategy: RollingUpdate
+  metrics:
+    enabled: false
+    image:
+      pullPolicy: IfNotPresent
+      registry: docker.io
+      repository: bitnami/redis-exporter
+      tag: 1.6.0-debian-10-r2
+    podAnnotations:
+      prometheus.io/port: "9121"
+      prometheus.io/scrape: "true"
+    prometheusRule:
+      additionalLabels: {}
+      enabled: false
+      namespace: ""
+      rules: []
+    service:
+      annotations: {}
+      labels: {}
+      type: ClusterIP
+    serviceMonitor:
+      enabled: false
+      selector:
+        prometheus: kube-prometheus
+  networkPolicy:
+    enabled: false
+    ingressNSMatchLabels: {}
+    ingressNSPodMatchLabels: {}
+  password: ""
+  persistence: {}
+  podSecurityPolicy:
+    create: false
+  rbac:
+    create: false
+    role:
+      rules: []
+  redisPassword: redisPassword
+  redisPort: 6379
+  securityContext:
+    enabled: true
+    fsGroup: 1001
+    runAsUser: 1001
+  sentinel:
+    customLivenessProbe: {}
+    customReadinessProbe: {}
+    downAfterMilliseconds: 60000
+    enabled: false
+    failoverTimeout: 18000
+    image:
+      pullPolicy: IfNotPresent
+      registry: docker.io
+      repository: bitnami/redis-sentinel
+      tag: 6.0.1-debian-10-r0
+    initialCheckTimeout: 5
+    livenessProbe:
+      enabled: true
+      failureThreshold: 5
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 5
+    masterSet: mymaster
+    parallelSyncs: 1
+    port: 26379
+    quorum: 2
+    readinessProbe:
+      enabled: true
+      failureThreshold: 5
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 1
+    service:
+      annotations: {}
+      labels: {}
+      redisPort: 6379
+      sentinelPort: 26379
+      type: ClusterIP
+    staticID: false
+    usePassword: true
+  serviceAccount:
+    create: false
+  slave:
+    affinity: {}
+    command: /run.sh
+    customLivenessProbe: {}
+    customReadinessProbe: {}
+    disableCommands:
+    - FLUSHDB
+    - FLUSHALL
+    extraFlags: []
+    livenessProbe:
+      enabled: true
+      failureThreshold: 5
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    persistence:
+      accessModes:
+      - ReadWriteOnce
+      enabled: true
+      matchExpressions: {}
+      matchLabels: {}
+      path: /data
+      size: 8Gi
+      subPath: ""
+    podAnnotations: {}
+    podLabels: {}
+    port: 6379
+    readinessProbe:
+      enabled: true
+      failureThreshold: 5
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 10
+    service:
+      annotations: {}
+      labels: {}
+      port: 6379
+      type: ClusterIP
+    statefulset:
+      updateStrategy: RollingUpdate
+  sysctlImage:
+    command: []
+    enabled: false
+    mountHostSys: false
+    pullPolicy: Always
+    registry: docker.io
+    repository: bitnami/minideb
+    resources: {}
+    tag: buster
+  usePassword: false
+  usePasswordFile: false
+  volumePermissions:
+    enabled: false
+    image:
+      pullPolicy: Always
+      registry: docker.io
+      repository: bitnami/minideb
+      tag: buster
+    resources: {}
+replicaCount: 1
+resources: {}
+securityContext: {}
+service:
+  port: 80
+  type: NodePort
+serviceAccount:
+  annotations: {}
+  create: true
+  name: ""
+tls:
+  generate: false
+
+HOOKS:
+---
+# Source: kolide-fleet/charts/mysql/templates/tests/test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kf-mysql-test
+  namespace: default
+  labels:
+    app: kf-mysql
+    chart: "mysql-1.6.3"
+    heritage: "Helm"
+    release: "kf"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  initContainers:
+    - name: test-framework
+      image: "dduportal/bats:0.4.0"
+      command:
+      - "bash"
+      - "-c"
+      - |
+        set -ex
+        # copy bats to tools dir
+        cp -R /usr/local/libexec/ /tools/bats/
+      volumeMounts:
+      - mountPath: /tools
+        name: tools
+  containers:
+    - name: kf-test
+      image: "mysql:5.7.28"
+      command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
+      volumeMounts:
+      - mountPath: /tests
+        name: tests
+        readOnly: true
+      - mountPath: /tools
+        name: tools
+  volumes:
+  - name: tests
+    configMap:
+      name: kf-mysql-test
+  - name: tools
+    emptyDir: {}
+  restartPolicy: Never
+---
+# Source: kolide-fleet/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "kf-kolide-fleet-test-connection"
+  labels:
+    helm.sh/chart: kolide-fleet-0.1.0
+    app.kubernetes.io/name: kolide-fleet
+    app.kubernetes.io/instance: kf
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['kf-kolide-fleet:80']
+  restartPolicy: Never
+MANIFEST:
+---
+# Source: kolide-fleet/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kf-kolide-fleet
+  labels:
+    helm.sh/chart: kolide-fleet-0.1.0
+    app.kubernetes.io/name: kolide-fleet
+    app.kubernetes.io/instance: kf
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: kolide-fleet/charts/mysql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kf-mysql
+  namespace: default
+  labels:
+    app: kf-mysql
+    chart: "mysql-1.6.3"
+    release: "kf"
+    heritage: "Helm"
+type: Opaque
+data:
+  
+  
+  mysql-root-password: "TkRrNk5VVk5Qdw=="
+  
+  
+  
+  mysql-password:  "bXlzcWxQYXNzd29yZA=="
+---
+# Source: kolide-fleet/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app: kf-kolide-fleet
+    chart: "kolide-fleet-0.1.0"
+    heritage: "Helm"
+    release: "kf"
+  name: kf-kolide-fleet
+data:
+  fleet.mysql.username: a29saWRl
+  fleet.mysql.password: bXlzcWxQYXNzd29yZA==
+  fleet.auth.jwt_key: and0X2tleQ==
+---
+# Source: kolide-fleet/charts/mysql/templates/tests/test-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kf-mysql-test
+  namespace: default
+  labels:
+    app: kf-mysql
+    chart: "mysql-1.6.3"
+    heritage: "Helm"
+    release: "kf"
+data:
+  run.sh: |-
+---
+# Source: kolide-fleet/charts/redis/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kf-redis
+  namespace: default
+  labels:
+    app: redis
+    chart: redis-10.6.13
+    heritage: Helm
+    release: kf
+data:
+  redis.conf: |-
+    # User-supplied configuration:
+    # Enable AOF https://redis.io/topics/persistence#append-only-file
+    appendonly yes
+    # Disable RDB persistence, AOF persistence already enabled.
+    save ""
+  master.conf: |-
+    dir /data
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+  replica.conf: |-
+    dir /data
+    slave-read-only yes
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+---
+# Source: kolide-fleet/charts/redis/templates/health-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kf-redis-health
+  namespace: default
+  labels:
+    app: redis
+    chart: redis-10.6.13
+    heritage: Helm
+    release: kf
+data:
+  ping_readiness_local.sh: |-
+    #!/bin/bash
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_liveness_local.sh: |-
+    #!/bin/bash
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$response" != "PONG" ] && [ "$response" != "LOADING Redis is loading the dataset in memory" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_master.sh: |-
+    #!/bin/bash
+     response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_liveness_master.sh: |-
+    #!/bin/bash
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$response" != "PONG" ] && [ "$response" != "LOADING Redis is loading the dataset in memory" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_readiness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_readiness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+  ping_liveness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_liveness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_liveness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+---
+# Source: kolide-fleet/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kf-kolide-fleet
+data:
+  config.yml: |-
+    mysql:
+      protocol: tcp
+      address: kf-mysql:3306
+      username: kolide
+      # handled as a secret
+      # password: kolide
+      database: kolide
+      tls_cert: ""
+      tls_key: ""
+      tls_ca: ""
+      tls_server_name: ""
+      tls_config: ""
+      max_open_conns: 50
+      max_idle_conns: 50
+    redis:
+      address: kf-redis-master:6379
+      cluster.slaveCount: 0
+      master.persistence.enabled: false
+      usePassword: false
+    server:
+      address: 0.0.0.0:8080
+      cert: /etc/pki/fleet/tls.crt
+      key: /etc/pki/fleet/tls.key
+      tls: true
+      tlsprofile: modern
+      url_prefix: ""
+    auth:
+      jwt_key: ""
+      bcrypt_cost: 12
+      salt_key_size: 24
+    app:
+      token_key_size: 24
+      invite_token_validity_period: 120h0m0s
+    session:
+      key_size: 64
+      duration: 2160h0m0s
+    osquery:
+      node_key_size: 24
+      status_log_plugin: filesystem
+      result_log_plugin: filesystem
+      label_update_interval: 1h0m0s
+      detail_update_interval: 1h0m0s
+      enable_log_rotation: false
+    logging:
+      debug: false
+      json: true
+      disable_banner: true
+    filesystem:
+      status_log_file: /dev/stdout
+      result_log_file: /dev/stdout
+      enable_log_rotation: false
+---
+# Source: kolide-fleet/charts/mysql/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: kf-mysql
+  namespace: default
+  labels:
+    app: kf-mysql
+    chart: "mysql-1.6.3"
+    release: "kf"
+    heritage: "Helm"
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+---
+# Source: kolide-fleet/charts/mysql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kf-mysql
+  namespace: default
+  labels:
+    app: kf-mysql
+    chart: "mysql-1.6.3"
+    release: "kf"
+    heritage: "Helm"
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: mysql
+  selector:
+    app: kf-mysql
+---
+# Source: kolide-fleet/charts/redis/templates/headless-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kf-redis-headless
+  namespace: default
+  labels:
+    app: redis
+    chart: redis-10.6.13
+    release: kf
+    heritage: Helm
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app: redis
+    release: kf
+---
+# Source: kolide-fleet/charts/redis/templates/redis-master-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kf-redis-master
+  namespace: default
+  labels:
+    app: redis
+    chart: redis-10.6.13
+    release: kf
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app: redis
+    release: kf
+    role: master
+---
+# Source: kolide-fleet/charts/redis/templates/redis-slave-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kf-redis-slave
+  namespace: default
+  labels:
+    app: redis
+    chart: redis-10.6.13
+    release: kf
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app: redis
+    release: kf
+    role: slave
+---
+# Source: kolide-fleet/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kf-kolide-fleet
+  labels:
+    helm.sh/chart: kolide-fleet-0.1.0
+    app.kubernetes.io/name: kolide-fleet
+    app.kubernetes.io/instance: kf
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: kolide-fleet
+    app.kubernetes.io/instance: kf
+---
+# Source: kolide-fleet/charts/mysql/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kf-mysql
+  namespace: default
+  labels:
+    app: kf-mysql
+    chart: "mysql-1.6.3"
+    release: "kf"
+    heritage: "Helm"
+
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kf-mysql
+      release: kf
+  template:
+    metadata:
+      labels:
+        app: kf-mysql
+        release: kf
+    spec:
+      serviceAccountName: default
+      initContainers:
+      - name: "remove-lost-found"
+        image: "busybox:1.29.3"
+        imagePullPolicy: "IfNotPresent"
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        command:  ["rm", "-fr", "/var/lib/mysql/lost+found"]
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+      # - name: do-something
+      #   image: busybox
+      #   command: ['do', 'something']
+      
+      containers:
+      - name: kf-mysql
+        image: "mysql:5.7.28"
+        imagePullPolicy: "IfNotPresent"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kf-mysql
+              key: mysql-root-password
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kf-mysql
+              key: mysql-password
+        - name: MYSQL_USER
+          value: "kolide"
+        - name: MYSQL_DATABASE
+          value: "kolide"
+        ports:
+        - name: mysql
+          containerPort: 3306
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}"
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+        # - name: extras
+        #   mountPath: /usr/share/extras
+        #   readOnly: true
+        
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: kf-mysql
+      # - name: extras
+      #   emptyDir: {}
+---
+# Source: kolide-fleet/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kf-kolide-fleet
+  labels:
+    app: kf-kolide-fleet
+    chart: "kolide-fleet-0.1.0"
+    release: "kf"
+    helm.sh/chart: kolide-fleet-0.1.0
+    app.kubernetes.io/name: kolide-fleet
+    app.kubernetes.io/instance: kf
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kolide-fleet
+      app.kubernetes.io/instance: kf
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kolide-fleet
+        app.kubernetes.io/instance: kf
+    spec:
+      serviceAccountName: kf-kolide-fleet
+      securityContext:
+        {}
+      volumes:
+        - name: fleet-configuration
+          configMap:
+            name: kf-kolide-fleet
+        - name: fleet-tls
+          secret:
+            secretName: kf-kolide-fleet-tls
+      containers:
+        - name: kolide-fleet
+          env:
+            - name: KOLIDE_AUTH_JWT_KEY
+              # value: jwt_key-env
+              valueFrom:
+                secretKeyRef:
+                  name: kf-kolide-fleet
+                  key: fleet.auth.jwt_key
+            - name: KOLIDE_MYSQL_USERNAME
+              # value: kolide
+              valueFrom:
+                secretKeyRef:
+                  name: kf-kolide-fleet
+                  key: fleet.mysql.username
+            - name: KOLIDE_MYSQL_PASSWORD
+              # value: mysqlPassword
+              valueFrom:
+                secretKeyRef:
+                  name: kf-kolide-fleet
+                  key: fleet.mysql.password
+          securityContext:
+            {}
+          image: "kolide/fleet:latest"
+          imagePullPolicy: IfNotPresent
+          args:
+            - "fleet"
+            - "serve"
+            - "--config"
+            - "/etc/fleet/config.yml"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            {}
+          volumeMounts:
+            - name: fleet-configuration
+              readOnly: true
+              mountPath: /etc/fleet
+            - name: fleet-tls
+              readOnly: true
+              mountPath: /etc/pki/fleet
+---
+# Source: kolide-fleet/charts/redis/templates/redis-master-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kf-redis-master
+  namespace: default
+  labels:
+    app: redis
+    chart: redis-10.6.13
+    release: kf
+    heritage: Helm
+spec:
+  selector:
+    matchLabels:
+      app: redis
+      release: kf
+      role: master
+  serviceName: kf-redis-headless
+  template:
+    metadata:
+      labels:
+        app: redis
+        chart: redis-10.6.13
+        release: kf
+        role: master
+      annotations:
+        checksum/health: 9a0296d09e8898acfe509ca0608ae384ce7705a28ee91b713d5c62487ff50654
+        checksum/configmap: 1ca883af1d383b55ae9e06ce788e265c6c1da512b3cb35774ac84196b14f70e6
+        checksum/secret: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    spec:
+      
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: default
+      containers:
+        - name: redis
+          image: docker.io/bitnami/redis:6.0.1-debian-10-r1
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          command:
+            - /bin/bash
+            - -c
+            - |
+              if [[ -n $REDIS_PASSWORD_FILE ]]; then
+                password_aux=`cat ${REDIS_PASSWORD_FILE}`
+                export REDIS_PASSWORD=$password_aux
+              fi
+              if [[ ! -f /opt/bitnami/redis/etc/master.conf ]];then
+                cp /opt/bitnami/redis/mounted-etc/master.conf /opt/bitnami/redis/etc/master.conf
+              fi
+              if [[ ! -f /opt/bitnami/redis/etc/redis.conf ]];then
+                cp /opt/bitnami/redis/mounted-etc/redis.conf /opt/bitnami/redis/etc/redis.conf
+              fi
+              ARGS=("--port" "${REDIS_PORT}")
+              ARGS+=("--protected-mode" "no")
+              ARGS+=("--include" "/opt/bitnami/redis/etc/redis.conf")
+              ARGS+=("--include" "/opt/bitnami/redis/etc/master.conf")
+              /run.sh ${ARGS[@]}
+          env:
+            - name: REDIS_REPLICATION_MODE
+              value: master
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: REDIS_PORT
+              value: "6379"
+          ports:
+            - name: redis
+              containerPort: 6379
+          livenessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_liveness_local.sh 5
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_readiness_local.sh 5
+          resources:
+            null
+          volumeMounts:
+            - name: health
+              mountPath: /health
+            - name: redis-data
+              mountPath: /data
+              subPath: 
+            - name: config
+              mountPath: /opt/bitnami/redis/mounted-etc
+            - name: redis-tmp-conf
+              mountPath: /opt/bitnami/redis/etc/
+      volumes:
+        - name: health
+          configMap:
+            name: kf-redis-health
+            defaultMode: 0755
+        - name: config
+          configMap:
+            name: kf-redis
+        - name: "redis-data"
+          emptyDir: {}
+        - name: redis-tmp-conf
+          emptyDir: {}
+  updateStrategy:
+    type: RollingUpdate
+---
+# Source: kolide-fleet/charts/redis/templates/redis-slave-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kf-redis-slave
+  namespace: default
+  labels:
+    app: redis
+    chart: redis-10.6.13
+    release: kf
+    heritage: Helm
+spec:
+  replicas: 0
+  serviceName: kf-redis-headless
+  selector:
+    matchLabels:
+      app: redis
+      release: kf
+      role: slave
+  template:
+    metadata:
+      labels:
+        app: redis
+        release: kf
+        chart: redis-10.6.13
+        role: slave
+      annotations:
+        checksum/health: 9a0296d09e8898acfe509ca0608ae384ce7705a28ee91b713d5c62487ff50654
+        checksum/configmap: 1ca883af1d383b55ae9e06ce788e265c6c1da512b3cb35774ac84196b14f70e6
+        checksum/secret: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    spec:
+      
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: default
+      containers:
+        - name: redis
+          image: docker.io/bitnami/redis:6.0.1-debian-10-r1
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          command:
+            - /bin/bash
+            - -c
+            - |
+              if [[ -n $REDIS_PASSWORD_FILE ]]; then
+                password_aux=`cat ${REDIS_PASSWORD_FILE}`
+                export REDIS_PASSWORD=$password_aux
+              fi
+              if [[ -n $REDIS_MASTER_PASSWORD_FILE ]]; then
+                password_aux=`cat ${REDIS_MASTER_PASSWORD_FILE}`
+                export REDIS_MASTER_PASSWORD=$password_aux
+              fi
+              if [[ ! -f /opt/bitnami/redis/etc/replica.conf ]];then
+                cp /opt/bitnami/redis/mounted-etc/replica.conf /opt/bitnami/redis/etc/replica.conf
+              fi
+              if [[ ! -f /opt/bitnami/redis/etc/redis.conf ]];then
+                cp /opt/bitnami/redis/mounted-etc/redis.conf /opt/bitnami/redis/etc/redis.conf
+              fi
+              ARGS=("--port" "${REDIS_PORT}")
+              ARGS+=("--slaveof" "${REDIS_MASTER_HOST}" "${REDIS_MASTER_PORT_NUMBER}")
+              ARGS+=("--protected-mode" "no")
+              ARGS+=("--include" "/opt/bitnami/redis/etc/redis.conf")
+              ARGS+=("--include" "/opt/bitnami/redis/etc/replica.conf")
+              /run.sh "${ARGS[@]}"
+          env:
+            - name: REDIS_REPLICATION_MODE
+              value: slave
+            - name: REDIS_MASTER_HOST
+              value: kf-redis-master-0.kf-redis-headless.default.svc.cluster.local
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_MASTER_PORT_NUMBER
+              value: "6379"
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          ports:
+            - name: redis
+              containerPort: 6379
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_liveness_local_and_master.sh 5
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_readiness_local_and_master.sh 5
+          resources:
+            null
+          volumeMounts:
+            - name: health
+              mountPath: /health
+            - name: redis-data
+              mountPath: /data
+            - name: config
+              mountPath: /opt/bitnami/redis/mounted-etc
+            - name: redis-tmp-conf
+              mountPath: /opt/bitnami/redis/etc
+      volumes:
+        - name: health
+          configMap:
+            name: kf-redis-health
+            defaultMode: 0755
+        - name: config
+          configMap:
+            name: kf-redis
+        - name: sentinel-tmp-conf
+          emptyDir: {}
+        - name: redis-tmp-conf
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+        labels:
+          app: redis
+          release: kf
+          heritage: Helm
+          component: slave
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+        
+        selector:
+  updateStrategy:
+    type: RollingUpdate
+---
+# Source: kolide-fleet/templates/db-migrate-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kf-kolide-fleet
+  labels:
+    app: kf-kolide-fleet
+    chart: "kolide-fleet-0.1.0"
+    release: "kf"
+    helm.sh/chart: kolide-fleet-0.1.0
+    app.kubernetes.io/name: kolide-fleet
+    app.kubernetes.io/instance: kf
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  template:
+    metadata:
+      labels:
+        app: kf-kolide-fleet
+        release: "kf"
+    spec:
+      volumes:
+        - name: fleet-configuration
+          configMap:
+            name: kf-kolide-fleet
+      containers:
+        - name: kolide-fleet
+          env:
+            - name: KOLIDE_AUTH_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kf-kolide-fleet
+                  key: fleet.auth.jwt_key
+            - name: KOLIDE_MYSQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: kf-kolide-fleet
+                  key: fleet.mysql.username
+            - name: KOLIDE_MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kf-kolide-fleet
+                  key: fleet.mysql.password
+          securityContext:
+            {}
+          image: "kolide/fleet:latest"
+          args:
+            - "fleet"
+            - "prepare"
+            - "db"
+            - "--config"
+            - "/etc/fleet/config.yml"
+          volumeMounts:
+            - name: fleet-configuration
+              readOnly: true
+              mountPath: /etc/fleet
+      restartPolicy: "Never"
+
+NOTES:
+# templates/NOTES.txt:1-22
+fleet
+
+## Generating the TLS certificates
+If you have just installed kolide/fleet, you will need to generate TLS certficates in the appropriate format:
+---
+  apiVersion: v1
+  data:
+    tls.crt: __BASE64_TLS_CERTIFICATE__
+    tls.key: __BASE64_TLS_KEY__
+  kind: Secret
+  metadata:
+    name: kf-kolide-fleet-tls
+  type: kubernetes.io/tls
+ 
+Checkout the jetstack cert manager project for automated cert creation in the appropriate format.
+## Accessing kolide-fleet
+----------------------
+1. Get the kolide-fleet URL to visit by running these commands in the same shell:
+  export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services kf-kolide-fleet)
+  export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT/login
+For more information, check the readme!
+
+Checkout the jetstack cert manager project for automated cert creation in the appropriate format. Alternatively for
+testing purposes a self signed certificate can be generated with the following command:
+$ openssl req -x509 \
+    -newkey rsa:4096 \
+    -keyout key.pem \
+    -out cert.pem \
+    -days 365 \
+    -nodes \
+    -subj "/C=EU/ST=Hessen/L=Frankfurt/O=AcmeWidgets Name/OU=Org/CN=__FILL_IN_YOUR_DOMAIN_HERE__"
+$ cat <<EOF | kubectl apply -f -
+  ---
+  apiVersion: v1
+  data:
+    tls.crt: $(cat cert.pem | base64 -w 0)
+    tls.key: $(cat key.pem | base64 -w 0)
+  kind: Secret
+  metadata:
+    name: kf-kolide-fleet-tls
+  type: kubernetes.io/tls
+  EOF
+This isn't a super elegant way of doing PKI, it's recommended *not* to use this in a production environment. However,
+for testing purposes it's fine.
+$ rm cert.pem key.pem
+
+## Installation
+If you have just installed kolide/kolide-fleet, the view will prompt you for further installation instructions. These cannot be
+automated during installation; you will need to complete them now.
