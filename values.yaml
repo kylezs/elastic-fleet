@@ -100,6 +100,14 @@ redis:
 elasticsearch:
   replicas: 1
 
+kibana:
+  service:
+    type: NodePort
+    # Port the NodePort uses to access the service
+    port: 5601
+    # The port that the container exposes (default for kibana is 5601)
+    targetPort: 5601
+
 
 filebeat:
   filebeatConfig:
@@ -108,7 +116,7 @@ filebeat:
       - type: container
         paths:
           - /var/log/containers/kf-kolide-fleet*.log
-        json.message_key: log
+        # json.message_key: log
         json.keys_under_root: true
       output.elasticsearch:
         host: '${NODE_NAME}'
