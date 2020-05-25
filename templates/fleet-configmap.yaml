@@ -46,7 +46,6 @@ data:
       result_log_plugin: filesystem
       label_update_interval: 1h0m0s
       detail_update_interval: 1h0m0s
-      enable_log_rotation: false
     logging:
       debug: {{ default false .Values.fleet.logging.debug }}
       json: {{ default false .Values.fleet.logging.json }}
@@ -54,4 +53,5 @@ data:
     filesystem:
       status_log_file: {{ .Values.fleet.filesystem.result_volume }}/status.log
       result_log_file: {{ .Values.fleet.filesystem.result_volume }}/result.log
-      enable_log_rotation: false
+      # when the log gets to 500MB or 28 days, whichever is first
+      enable_log_rotation: true
