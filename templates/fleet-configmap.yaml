@@ -52,6 +52,6 @@ data:
       json: {{ default false .Values.fleet.logging.json }}
       disable_banner: {{ default false .Values.fleet.logging.disable_banner }}
     filesystem:
-      status_log_file: /dev/null
-      result_log_file: /dev/stdout
+      status_log_file: {{ .Values.fleet.filesystem.result_volume }}/status.log
+      result_log_file: {{ .Values.fleet.filesystem.result_volume }}/result.log
       enable_log_rotation: false

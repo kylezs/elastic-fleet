@@ -32,9 +32,16 @@ spec:
         - name: fleet-configuration
           configMap:
             name: {{ template "kolide-fleet.fullname" . }}
+        - name: fleet-logs
+          emptyDir: {}
         - name: fleet-tls
           secret:
             secretName: {{template "kolide-fleet.fullname" . }}-tls
+        - name: filebeat-configuration
+          configMap:
+            # TODO: FIX THIS
+            # defaultMode: 0600
+            name: filebeat-config
       containers:
         - name: {{ .Chart.Name }}
           env:
@@ -75,6 +82,42 @@ spec:
             - name: fleet-configuration
               readOnly: true
               mountPath: /etc/fleet
+            - name: fleet-logs
+              readOnly: false
+              mountPath: {{ .Values.fleet.filesystem.result_volume }}
             - name: fleet-tls
               readOnly: true
               mountPath: /etc/pki/fleet
+        - name: filebeat-sidecar
+          image: docker.elastic.co/beats/filebeat:7.7.0
+          env:
+          - name: ELASTICSEARCH_HOST
+            value: elasticsearch
+          - name: ELASTICSEARCH_PORT
+            value: "9200"
+          - name: ELASTICSEARCH_USERNAME
+            value: elastic
+          - name: ELASTICSEARCH_PASSWORD
+            value: changeme
+          - name: ELASTIC_CLOUD_ID
+            value:
+          - name: ELASTIC_CLOUD_AUTH
+            value:
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          args:
+            - "-c"
+            - "/etc/filebeat.yml"
+          # Mount to the same volume, so we can collect the logs
+          volumeMounts:
+            - name: fleet-logs
+              readOnly: true
+              mountPath: {{ .Values.fleet.filesystem.result_volume }}
+            - name: filebeat-configuration
+              # location of filebeat.yml
+              mountPath: /etc/filebeat.yml
+              subPath: filebeat.yml
+              readOnly: true
+

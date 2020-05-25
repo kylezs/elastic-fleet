@@ -11,8 +11,5 @@ dependencies:
 - name: kibana
   repository: https://helm.elastic.co
   version: 7.7.0
-- name: filebeat
-  repository: https://helm.elastic.co
-  version: 7.7.0
-digest: sha256:4b017598c212efb0b1b8aca446636c307247f991ec987f7d5ea2fc562a761219
-generated: "2020-05-24T10:59:33.114181+10:00"
+digest: sha256:0f889b20d2b4a04ed446a76ed0b28e529d720e2f2ec73842f22e36baed9a82ee
+generated: "2020-05-25T12:31:13.66018+10:00"

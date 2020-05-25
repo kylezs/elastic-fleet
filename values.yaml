@@ -78,6 +78,8 @@ fleet:
     disable_banner: true
   server:
     tls: true
+  filesystem:
+    result_volume: /var/log/fleet
 
 tls:
   generate: false
@@ -108,22 +110,3 @@ kibana:
     # The port that the container exposes (default for kibana is 5601)
     targetPort: 5601
 
-
-filebeat:
-  filebeatConfig:
-    filebeat.yml: |
-      filebeat.inputs:
-      - type: container
-        paths:
-          - /var/log/containers/kf-kolide-fleet*.log
-        # json.message_key: log
-        json.keys_under_root: true
-      output.elasticsearch:
-        host: '${NODE_NAME}'
-        hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
-
-
-
-# processors:
-#   - decode_json_fields:
-#       fields: ["message"]

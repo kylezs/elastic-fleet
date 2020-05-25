@@ -19,9 +19,9 @@ dependencies:
   - name: "kibana"
     version: 7.7.0
     repository: "https://helm.elastic.co"
-  - name: "filebeat"
-    version: 7.7.0
-    repository: "https://helm.elastic.co"
+  # - name: "filebeat"
+  #   version: 7.7.0
+  #   repository: "https://helm.elastic.co"
 
 # A chart can be either an 'application' or a 'library' chart.
 #
