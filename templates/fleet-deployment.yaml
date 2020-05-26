@@ -39,8 +39,7 @@ spec:
             secretName: {{template "kolide-fleet.fullname" . }}-tls
         - name: filebeat-configuration
           configMap:
-            # TODO: FIX THIS
-            # defaultMode: 0600
+            # defaultMode: 0444
             name: filebeat-config
       containers:
         - name: {{ .Chart.Name }}

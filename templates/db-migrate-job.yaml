@@ -8,6 +8,8 @@ metadata:
     release: "{{ .Release.Name }}"
     {{- include "kolide-fleet.labels" . | nindent 4 }}
 spec:
+  backoffLimit: 5
+  ttlSecondsAfterFinished: 60
   template:
     metadata:
     {{- with .Values.podAnnotations }}

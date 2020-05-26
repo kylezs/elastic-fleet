@@ -27,39 +27,28 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations:
+  seccomp.security.alpha.kubernetes.io/pod: runtime/default
 
 podSecurityContext:
   {}
-  # fsGroup: 2000
 
 securityContext:
-  {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  capabilities:
+    # drop the default linux superuser capabilities
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
 
 service:
   name: fleet-nodeport
   type: NodePort
   port: 8080
 
-
 resources:
   {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
 
 autoscaling:
   enabled: false
@@ -89,6 +78,7 @@ mysql:
   mysqlPassword: mysqlPasswordClearText
   mysqlDatabase: kolideClearText
   persistence:
+    enabled: true
     existingClaim: kf-mysql-pvc
 
 redis:
@@ -101,6 +91,26 @@ redis:
 
 elasticsearch:
   replicas: 1
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        # default is 30Gi
+        storage: 10Gi
+  podSecurityPolicy:
+    name: "elasticsecuritypolicy"
+    create: true
+    spec:
+      readOnlyRootFilesystem: true
+      privileged: false
+      allowPrivilegeEscalation: false
+      hostPID: false
+      hostNetwork: false
+      volumes:
+      - persistentVolumeClaim
+      - configMap
+      - secret
+
 
 kibana:
   service:
@@ -109,4 +119,6 @@ kibana:
     port: 5601
     # The port that the container exposes (default for kibana is 5601)
     targetPort: 5601
+  securityContext:
+    readOnlyRootFilesystem: true
 
