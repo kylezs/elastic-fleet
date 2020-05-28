@@ -11,4 +11,8 @@ data:
       json.keys_under_root: true
     output.elasticsearch:
       host: '${NODE_NAME}'
-      hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
+      hosts: 'https://elasticsearch-master:9200'
+      protocol: https
+      ssl.certificate_authorities: ['/etc/pki/root/elastic-certificate.pem']
+      username: elastic
+      password: VERY_SECURE

@@ -41,6 +41,9 @@ spec:
           configMap:
             # defaultMode: 0444
             name: filebeat-config
+        - name: elastic-cert
+          secret:
+            secretName: elastic-certificate-pem
       containers:
         - name: {{ .Chart.Name }}
           env:
@@ -115,4 +118,8 @@ spec:
               mountPath: /etc/filebeat.yml
               subPath: filebeat.yml
               readOnly: true
+            - name: elastic-cert
+              readOnly: true
+              mountPath: /etc/pki/root
+
 
