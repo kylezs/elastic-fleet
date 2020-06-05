@@ -1,17 +1,20 @@
 apiVersion: v1
 kind: pack
 spec:
-  name: basic-security-settings
+  name: basic-security-settings-mac
   queries:
-    - query: firewall-enabled
-      interval: 7200
+    - query: firewall-enabled-dar
+      interval: 60
       snapshot: true
-    - query: disk-encryption-enabled
-      interval: 7200
+    - query: disk-encryption-enabled-dar
+      interval: 60
       snapshot: true
-    - query: password-manager-installed
-      interval: 7200
+    - query: password-manager-installed-dar
+      interval: 60
       snapshot: true
-    - query: screenlock-enabled
-      interval: 7200
+    - query: screenlock-enabled-dar
+      interval: 60
       snapshot: true
+  targets:
+    labels:
+      - macOS

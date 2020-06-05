@@ -16,8 +16,27 @@ spec:
 apiVersion: v1
 kind: query
 spec:
-  # Use the osquery patches table available to windows
-  name: password-manager-installed
+  name: auto-update-enabled-win
+  description: Returns 1 if autoupdate health is 'Good', 0 otherwise
+  query: select case when autoupdate='Good' then 1 else 0 end as compliant from windows_security_center;
+  support:
+    platforms:
+      - windows
+---
+apiVersion: v1
+kind: query
+spec:
+  name: firewall-enabled-win
+  description: Returns 1 if firewall health is "Good", 0 otherwise
+  query: select case when firewall='Good' then 1 else 0 end as compliant from windows_security_center;
+  support:
+    platforms:
+      - windows
+---
+apiVersion: v1
+kind: query
+spec:
+  name: password-manager-installed-win
   description: "Count of password managers installed"
   query: >
     SELECT count(name) as compliant FROM programs WHERE
@@ -34,4 +53,12 @@ spec:
     platforms:
       - windows
 ---
-
+apiVersion: v1
+kind: query
+spec:
+  name: os-up-to-date-win
+  description: Pass if Windows version is above a certain version. Version must be a string like '2.3.2'
+  query: select case when version >= '10.0.19041' then 1 else 0 end as compliant from os_version;
+  support:
+    platforms:
+      - windows
