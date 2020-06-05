@@ -85,4 +85,17 @@ spec:
     platform:
       - darwin
 ---
-
+# DOESN'T WORK YET
+apiVersion: v1
+kind: query
+spec:
+  name: chrome-up-to-date-if-exists-dar
+  description: Pass if chrome isn't installed or it is installed AND the version is above the version specified
+  query: >
+    select bundle_name, case when bundle_name like '%chrome%' and bundle_short_version > '1.0.0.0'
+    then 1 else 0 end as compliant
+    from apps where exists
+    (select bundle_name from apps where lower(bundle_name) like '%chrome%');
+  support:
+    platform:
+      - darwin
