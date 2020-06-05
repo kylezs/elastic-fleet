@@ -53,5 +53,36 @@ apiVersion: v1
 kind: query
 spec:
   name: os-up-to-date-dar
-  description: Pass if macOS version is above a certain version
+  description: Pass if macOS version is above a certain version. Version must be a string like '2.3.2'
   query: select case when version >= '10.15.5' then 1 else 0 end as compliant from os_version;
+  support:
+    platforms:
+      - darwin
+---
+apiVersion: v1
+kind: query
+spec:
+  name: auto-update-enabled-dar
+  description: Pass if checkCount=3, fail otherwise.
+  query: >
+    select count(key) as checkCount, case when
+    key='AutomaticDownload' and value='true' or
+    key='CriticalUpdateInstall' and value='true' or
+    key='AutomaticCheckEnabled' and value='true' then 1 else 0 end as compliant
+    from preferences where domain='com.apple.SoftwareUpdate' and host='current'
+    and compliant=1;
+  support:
+    platform:
+      - darwin
+---
+apiVersion: v1
+kind: query
+spec:
+  name: remote-login-enabled-dar
+  description: Pass if remote_login is disabled (0)
+  query: select remote_login from sharing_preferences
+  support:
+    platform:
+      - darwin
+---
+
