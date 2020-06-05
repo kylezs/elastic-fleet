@@ -15,6 +15,9 @@ spec:
     - query: screenlock-enabled-dar
       interval: 60
       snapshot: true
+    - query: os-up-to-date-dar
+      interval: 60
+      snapshot: true
     - query: auto-update-enabled-dar
       interval: 60
       snapshot: true
