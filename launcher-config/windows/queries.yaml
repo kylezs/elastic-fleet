@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: disk-encryption-enabled-win
+  description: Returns 1 if disk is 100% encrypted with a non-None encryption method, 0 otherwise
+  query: >
+    SELECT case
+    WHEN percentage_encrypted=100 and encryption_method != 'None'
+    THEN 1 ELSE 0 END as compliant 
+    FROM bitlocker_info;
+  support:
+    platforms:
+      - windows
+---
+apiVersion: v1
+kind: query
+spec:
+  # Use the osquery patches table available to windows
+  name: password-manager-installed
+  description: "Count of password managers installed"
+  query: >
+    SELECT count(name) as compliant FROM programs WHERE
+    LOWER(name) LIKE '%last%pass%' OR
+    LOWER(name) LIKE '%1password%' OR
+    LOWER(name) LIKE '%dashlane%' OR
+    LOWER(name) LIKE '%enpass%' OR
+    LOWER(name) LIKE '%mitto%' OR
+    LOWER(name) LIKE '%myki%' OR
+    LOWER(name) LIKE '%intuitive%password%' OR
+    LOWER(name) LIKE '%bitwarden%' OR
+    LOWER(name) LIKE '%key%pass%';
+  support:
+    platforms:
+      - windows
+---
+

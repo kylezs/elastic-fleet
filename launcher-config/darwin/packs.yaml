@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: pack
+spec:
+  name: basic-security-settings
+  queries:
+    - query: firewall-enabled
+      interval: 7200
+      snapshot: true
+    - query: disk-encryption-enabled
+      interval: 7200
+      snapshot: true
+    - query: password-manager-installed
+      interval: 7200
+      snapshot: true
+    - query: screenlock-enabled
+      interval: 7200
+      snapshot: true

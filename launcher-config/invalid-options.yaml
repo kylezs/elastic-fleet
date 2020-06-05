@@ -6,22 +6,17 @@ apiVersion: v1
 kind: options
 spec:
   config:
+    # What do these do vs the fleet configmap
     options:
       config_plugin: kolide_grpc
       disable_events: false
       events_max: 8
       distributed_interval: 3
       distributed_tls_max_attempts: 3
-      logger_plugin: kolide_grpc
+      logger_plugin: filesystem
+      logger_path: ./tmp/logs
       verbose: true
       # turn watchdog off, so we don't get queries stopping during testing
       watchdog_level: -1
-    decorators:
-      load:
-        - SELECT version FROM osquery_info
-        - SELECT uuid AS host_uuid FROM system_info
-      always:
-        # get the logged in user of the machine each time
-        - "SELECT user AS username FROM logged_in_users WHERE user <> '' ORDER BY time LIMIT 1"
 ---
 
