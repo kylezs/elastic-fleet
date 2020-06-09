@@ -60,7 +60,7 @@ autoscaling:
 fleet:
   # to be handled by secrets
   auth:
-    jwt_key: <placeholder>
+    jwt_key: <placeholder for secret>
   logging:
     debug: false
     json: true
@@ -74,9 +74,11 @@ tls:
   generate: false
 
 mysql:
-  # This is required
-  mysqlPassword: <placeholder>
-  mysqlDatabase: <placeholder>
+  # These come from values.secret.yaml (the actual creds will not be in
+  # the repo)
+  mysqlUsername: <placeholder for secret>
+  mysqlPassword: <placeholder for secret>
+  mysqlDatabase: <placeholder for secret>
   persistence:
     enabled: true
     existingClaim: kf-mysql-pvc

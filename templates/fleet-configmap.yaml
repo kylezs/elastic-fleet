@@ -7,10 +7,9 @@ data:
     mysql:
       protocol: tcp
       address: kf-mysql:3306
-      username: kolide
-      # handled as a secret
-      # password: kolide
-      database: kolide
+      # username: <placeholder for secret>
+      # password: <placeholder for secret>
+      # database: <placeholder for secret>
       tls_cert: ""
       tls_key: ""
       tls_ca: ""
@@ -31,7 +30,7 @@ data:
       tlsprofile: modern
       url_prefix: ""
     auth:
-      jwt_key: ""
+      jwt_key: <placeholder for secret>
       bcrypt_cost: 12
       salt_key_size: 24
     app:
@@ -39,7 +38,7 @@ data:
       invite_token_validity_period: 120h0m0s
     session:
       key_size: 64
-      duration: 2160h0m0s
+      duration: 4h0m0s
     osquery:
       node_key_size: 24
       status_log_plugin: filesystem
