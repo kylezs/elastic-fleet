@@ -9,6 +9,12 @@ data:
       paths:
         - {{ .Values.fleet.filesystem.result_volume }}/result.log
       json.keys_under_root: true
+      processors:
+        - drop_fields:
+            fields: ["log.file.path", "numerics", "epoch", "ecs.version", "counter",
+              "hostIdentifier", "action", "suricata.eve.timestamp", "input.type",
+              "agent.ephemeral_id", "agent.hostname", "agent.id", "agent.version", "host.name",
+              "log.offset", "unixTime"]
     output.elasticsearch:
       host: '${NODE_NAME}'
       hosts: 'https://elasticsearch-master:9200'

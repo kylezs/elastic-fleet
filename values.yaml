@@ -60,7 +60,7 @@ autoscaling:
 fleet:
   # to be handled by secrets
   auth:
-    jwt_key: "jwt_key_cleartext"
+    jwt_key: <placeholder>
   logging:
     debug: false
     json: true
@@ -75,8 +75,8 @@ tls:
 
 mysql:
   # This is required
-  mysqlPassword: mysqlPasswordClearText
-  mysqlDatabase: kolideClearText
+  mysqlPassword: <placeholder>
+  mysqlDatabase: <placeholder>
   persistence:
     enabled: true
     existingClaim: kf-mysql-pvc
