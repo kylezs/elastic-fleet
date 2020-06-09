@@ -20,5 +20,6 @@ data:
       hosts: 'https://elasticsearch-master:9200'
       protocol: https
       ssl.certificate_authorities: ['/etc/pki/root/elastic-certificate.pem']
-      username: elastic
-      password: VERY_SECURE
+      username: '${ELASTICSEARCH_USERNAME}'
+      password: '${ELASTICSEARCH_PASSWORD}'
+---

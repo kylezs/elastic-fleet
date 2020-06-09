@@ -23,6 +23,9 @@ dependencies:
   - name: "kibana"
     version: 7.7.0
     repository: "https://helm.elastic.co"
+  - name: "elastalert"
+    version: 1.5.2
+    repository: "https://helm.codesim.com"
 
 # A chart can be either an 'application' or a 'library' chart.
 #

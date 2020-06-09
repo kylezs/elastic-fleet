@@ -11,5 +11,8 @@ dependencies:
 - name: kibana
   repository: https://helm.elastic.co
   version: 7.7.0
-digest: sha256:0f889b20d2b4a04ed446a76ed0b28e529d720e2f2ec73842f22e36baed9a82ee
-generated: "2020-05-25T12:31:13.66018+10:00"
+- name: elastalert
+  repository: https://helm.codesim.com
+  version: 1.5.2
+digest: sha256:561dcab08979ff3ac2a209cf44be92543c359c62ac4da34b0014c9a27dd7a829
+generated: "2020-06-09T14:13:10.40622+10:00"

@@ -194,3 +194,12 @@ kibana:
   readinessProbe:
     initialDelaySeconds: 30
 
+elastalert:
+  elasticsearch:
+    host: elasticsearch-master
+    port: 9200
+    useSsl: true
+    verifyCerts: false
+    credentialsSecret: elastic-credentials
+    credentialsSecretUsernameKey: username
+    credentialsSecretPasswordKey: password
