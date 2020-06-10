@@ -39,7 +39,6 @@ spec:
             secretName: {{template "kolide-fleet.fullname" . }}-tls
         - name: filebeat-configuration
           configMap:
-            # defaultMode: 0444
             name: filebeat-config
         - name: elastic-cert
           secret:
@@ -48,19 +47,16 @@ spec:
         - name: {{ .Chart.Name }}
           env:
             - name: KOLIDE_AUTH_JWT_KEY
-              # value: jwt_key-env
               valueFrom:
                 secretKeyRef:
                   name: {{ template "kolide-fleet.fullname" . }}
                   key: fleet.auth.jwt_key
             - name: KOLIDE_MYSQL_USERNAME
-              # value: kolide
               valueFrom:
                 secretKeyRef:
                   name: {{ template "kolide-fleet.fullname" . }}
                   key: fleet.mysql.username
             - name: KOLIDE_MYSQL_PASSWORD
-              # value: mysqlPassword
               valueFrom:
                 secretKeyRef:
                   name: {{ template "kolide-fleet.fullname" . }}
