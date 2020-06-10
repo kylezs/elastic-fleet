@@ -42,6 +42,7 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1000
 
+# Won't be required at all with Ingress Controller
 service:
   name: fleet-nodeport
   type: NodePort
@@ -82,6 +83,10 @@ mysql:
   persistence:
     enabled: true
     existingClaim: kf-mysql-pvc
+  podLabels:
+    # targetted by network policy
+    role: fleet-backend
+
 
 redis:
   cluster:
@@ -89,7 +94,15 @@ redis:
   master:
     persistence:
       enabled: false
+    podLabels:
+      # targetted by network policy
+      role: fleet-backend
   usePassword: false
+  podLabels:
+    role: fleet-backend
+  # this may break some other stuff
+  # networkPolicy.enabled: true
+
 
 elasticsearch:
   replicas: 1

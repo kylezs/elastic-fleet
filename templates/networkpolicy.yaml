@@ -1,0 +1,34 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: fleet-db-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      # redis and mysql
+      role: fleet-backend
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: kolide-fleet
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: elastic-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: elasticsearch-master
+  ingress:
+  - from:
+    - podSelector:
+        matchExpressions:
+          - {key: name, operator: In, values: [kolide-fleet]}
+    - podSelector:
+        matchExpressions:
+          - {key: app, operator: In, values: [kibana]}

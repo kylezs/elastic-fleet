@@ -15,6 +15,9 @@ spec:
     - query: auto-update-enabled-win
       interval: 60
       snapshot: true
+    - query: os-up-to-date-win
+      interval: 60
+      snapshot: true
   targets:
     labels:
       - MS Windows
