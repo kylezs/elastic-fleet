@@ -13,7 +13,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          name: kolide-fleet
+          app: kolide-fleet
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -27,8 +27,34 @@ spec:
   ingress:
   - from:
     - podSelector:
+        # allow filebeat to connect
         matchExpressions:
-          - {key: name, operator: In, values: [kolide-fleet]}
+          - {key: app, operator: In, values: [kolide-fleet, kibana]}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: fleet-db-migrate-job-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: kf-mysql
+  ingress:
+  - from:
     - podSelector:
-        matchExpressions:
-          - {key: app, operator: In, values: [kibana]}
+        matchLabels:
+          app: kf-kolide-fleet-job
+--- 
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-fleet-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: kolide-fleet
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress

@@ -20,17 +20,16 @@
 #   persistentVolumeReclaimPolicy: Retain
 #   storageClassName: standard
 # ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: kf-mysql-pvc
-#   annotations:
-#     helm.sh/resource-policy: keep
-
-# spec:
-#   storageClassName: linode-block-storage-retain
-#   accessModes:
-#   - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 2Gi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kf-mysql-pvc
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  storageClassName: linode-block-storage-retain
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "kolide-fleet.fullname" . }}
+  name: {{ include "kolide-fleet.fullname" . }}-job
   labels:
     app: {{ template "kolide-fleet.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
@@ -20,7 +20,7 @@ spec:
       {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        app: {{ template "kolide-fleet.fullname" . }}
+        app: {{ template "kolide-fleet.fullname" . }}-job
         release: "{{ .Release.Name }}"
     spec:
       volumes:

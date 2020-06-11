@@ -1,22 +1,22 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: dashboard-ingress
-  annotations:
-    kubernetes.io/ingress.class: nginx
-spec:
-  rules:
-  # This should be the subdomain name eventually
-  # host: 172.105.165.211
-  - http:
-      paths:
-        - path: /fleet
-          pathType: Prefix
-          backend:
-            serviceName: kf-kolide-fleet
-            servicePort: 443
----
-      # - backend:
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: dashboard-ingress
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+# spec:
+#   rules:
+#   # This should be the subdomain name eventually
+#   # host: 172.105.165.211
+#   - http:
+#       paths:
+#         - path: /fleet
+#           pathType: Prefix
+#           backend:
+#             serviceName: kf-kolide-fleet
+#             servicePort: 443
+# ---
+#       # - backend:
       #     serviceName: kf-kolide-fleet
       #     servicePort: 80
 

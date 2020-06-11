@@ -94,9 +94,6 @@ redis:
   master:
     persistence:
       enabled: false
-    podLabels:
-      # targetted by network policy
-      role: fleet-backend
   usePassword: false
   podLabels:
     role: fleet-backend
