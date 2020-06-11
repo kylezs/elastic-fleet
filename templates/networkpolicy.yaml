@@ -1,60 +1,60 @@
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: fleet-db-network-policy
-  namespace: default
-spec:
-  podSelector:
-    matchLabels:
-      # redis and mysql
-      role: fleet-backend
-  ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: kolide-fleet
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: elastic-network-policy
-  namespace: default
-spec:
-  podSelector:
-    matchLabels:
-      app: elasticsearch-master
-  ingress:
-  - from:
-    - podSelector:
-        # allow filebeat to connect
-        matchExpressions:
-          - {key: app, operator: In, values: [kolide-fleet, kibana]}
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: fleet-db-migrate-job-policy
-  namespace: default
-spec:
-  podSelector:
-    matchLabels:
-      app: kf-mysql
-  ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: kf-kolide-fleet-job
---- 
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-all-fleet-policy
-spec:
-  podSelector:
-    matchLabels:
-      app: kolide-fleet
-  ingress:
-  - {}
-  policyTypes:
-  - Ingress
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: fleet-db-network-policy
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       # redis and mysql
+#       role: fleet-backend
+#   ingress:
+#   - from:
+#     - podSelector:
+#         matchLabels:
+#           app: kolide-fleet
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: elastic-network-policy
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: elasticsearch-master
+#   ingress:
+#   - from:
+#     - podSelector:
+#         # allow filebeat to connect
+#         matchExpressions:
+#           - {key: app, operator: In, values: [kolide-fleet, kibana]}
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: fleet-db-migrate-job-policy
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: kf-mysql
+#   ingress:
+#   - from:
+#     - podSelector:
+#         matchLabels:
+#           app: kf-kolide-fleet-job
+# --- 
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: allow-all-fleet-policy
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: kolide-fleet
+#   ingress:
+#   - {}
+#   policyTypes:
+#   - Ingress
