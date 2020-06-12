@@ -1,6 +1,17 @@
 # How to deploy this app in a production ready state
 NB: This has only been tested on Linode Kubernetes Engine (LKE) and some of the steps/resources are LKE specific e.g. PVs and PVCs.
 
+This application is a helm chart. To deploy you will first need to have [helm installed](https://helm.sh/docs/intro/install/) on your machine.
+
+1. Clone the repository and 
+
+```
+git clone ...
+cd ...
+```
+
+[2. Setup a Kubernetes Cluster - This is the LKE guide](https://www.linode.com/docs/kubernetes/deploy-and-manage-a-cluster-with-linode-kubernetes-engine-a-tutorial/)
+
 
 
 Apply necessary credentials
