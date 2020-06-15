@@ -1,5 +1,5 @@
 # How to Setup Kolide Fleet
-It's one thing to have everything launcher, however, without the queries applied to the kolide fleet app, the agents won't start logging, since there are no queries to apply.
+It's one thing to have everything deployed, however, without the queries applied to the kolide fleet app, the agents won't start logging, since there are no queries to apply.
 
 ## Recommended way
 This way of applying and updating the queries is recommended because it uses the queries as they are stored in source control.
