@@ -1,39 +1,11 @@
-# How to deploy this app in a production ready state
-NB: This has only been tested on Linode Kubernetes Engine (LKE) and some of the steps/resources are LKE specific e.g. PVs and PVCs.
-
-This application is a helm chart. To deploy you will first need to have [helm installed](https://helm.sh/docs/intro/install/) on your machine.
-
-1. Clone the repository and 
-
-```
-git clone ...
-cd ...
-```
-
-2. [Setup a Kubernetes Cluster - This is the LKE guide](https://www.linode.com/docs/kubernetes/deploy-and-manage-a-cluster-with-linode-kubernetes-engine-a-tutorial/)
-
-
-
-Apply necessary credentials
-
-
-Ensure you have a domain name
-
-
-SSL cert rotation
-
-## Setting up Ingress
-We set up an Ingress (Load Balancer) in order to route traffic to each user facing application (Kibana and Kolide fleet). It also allows us to manage TLS in a central location, and means we don't need to use/remember a port when accessing our services (as we would if we just used NodePort), we can just use the domain.
-
-[This is Linode's guide for setting up an ingress, that was followed here](https://www.linode.com/docs/kubernetes/how-to-deploy-nginx-ingress-on-linode-kubernetes-engine/)
-
-
-
-## Setting up SMTP
+# Setting up SMTP
 In order for Elastalert to send alerts via email, it must be able to connect to an SMTP server. 
 
 You will also need SMTP enabled on the fleet server to enable some features like having multiple users. This is important so not everyone has admin privileges.
 
+**NOTE: On Linode, the mail ports 25, 465 and 587 are blocked by default for new users. You may have to ask them to open the ports.**
+
+## Steps
 1. Find the SMTP details for the email provider you wish to use to send emails from.
 For gmail it will look something like this:
 

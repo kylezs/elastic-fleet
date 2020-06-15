@@ -6,19 +6,19 @@ data:
   example_freq.yaml: |
     es_host: elasticsearch-master
     es_port: 9200
-    name: Test rule
+    name: Test rule - Just to see if SMTP works
     type: any
     index: filebeat-*
     alert:
     - "email"
     email:
     - "zsembery.kyle@gmail.com"
-    smtp_host: "smtp.gmail.com"
+    smtp_host: {{ .Values.smtp.host }}
     # the TLS port
-    smtp_port: 25
+    smtp_port: {{ .Values.smtp.port }}
     # will use TLS if this is true, NOT SSL
-    smtp_ssl : false
-    from_addr: "kylezaws@gmail.com"
+    smtp_ssl : {{ .Values.smtp.useTLS }}
+    from_addr: {{ .Values.smtp.fromAddress }}
     smtp_auth_file: "/tmp/smtp/smtp_auth.yaml"
 ---
 

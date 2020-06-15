@@ -215,3 +215,12 @@ elastalert:
     credentialsSecret: elastic-credentials
     credentialsSecretUsernameKey: username
     credentialsSecretPasswordKey: password
+
+#NB: username and password comes from values.secret.yaml
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  useTLS: true
+  # where the email appears to come from (best to set to the actual from address)
+  # which is set in values.secret.yaml as 'user'
+  fromAddress: example@mail.com
