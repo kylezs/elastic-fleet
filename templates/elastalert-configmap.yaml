@@ -31,7 +31,7 @@ data:
     # How often ElastAlert will query elasticsearch
     # The unit can be anything from weeks to seconds
     run_every:
-      hours: 12
+      seconds: 60
 
     # ElastAlert will buffer results from the most recent
     # period of time, in case some log sources are not in real time

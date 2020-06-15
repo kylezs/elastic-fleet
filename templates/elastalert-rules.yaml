@@ -6,12 +6,21 @@ data:
   example_freq.yaml: |
     es_host: elasticsearch-master
     es_port: 9200
-    name: Example rule
+    name: Test rule
     type: any
     index: filebeat-*
-    alert: email
-    email: zsembery.kyle@gmail.com
-
+    alert:
+    - "email"
+    email:
+    - "zsembery.kyle@gmail.com"
+    smtp_host: "smtp.gmail.com"
+    # the TLS port
+    smtp_port: 25
+    # will use TLS if this is true, NOT SSL
+    smtp_ssl : false
+    from_addr: "kylezaws@gmail.com"
+    smtp_auth_file: "/tmp/smtp/smtp_auth.yaml"
+---
 
 # compare_key: snapshot.compliant
 # blacklist:
