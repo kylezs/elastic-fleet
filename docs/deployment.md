@@ -13,7 +13,7 @@ cd ...
 2. [Setup a Kubernetes Cluster - This is the LKE guide](https://www.linode.com/docs/kubernetes/deploy-and-manage-a-cluster-with-linode-kubernetes-engine-a-tutorial/)
 
 
-3. Setup the credentials. -- Requires more info, will add after deployment.
+3. Setup the secrets. You will find a file called `secrets.example.yaml` this should be renamed to `values.secret.yaml` and the values within changed to your secret values. You should not share these values with anyone. Once deployed, this file can be removed and/or the values changed so as not to reflect the values of the secrets in production.
 
 4. Ensure you have a domain name.
 A domain name is required for setting up a [kolide launcher package](packaging-launcher.md) and for using a TLS protected load balancer.
@@ -24,8 +24,9 @@ SSL cert rotation
 ## Setting up Ingress
 We set up an Ingress (Load Balancer) in order to route traffic to each user facing application (Kibana and Kolide fleet). It also allows us to manage TLS in a central location, and means we don't need to use/remember a port when accessing our services (as we would if we just used NodePort), we can just use the domain.
 
-[This is Linode's guide for setting up an ingress, that was followed here](https://www.linode.com/docs/kubernetes/how-to-deploy-nginx-ingress-on-linode-kubernetes-engine/)
+[This is Linode's guide for setting up an ingress, that was followed here](https://www.linode.com/docs/kubernetes/how-to-deploy-nginx-ingress-on-linode-kubernetes-engine/#install-the-nginx-ingress-controller)
 
+Start from "Install the NGINX Ingress Controller"
 
 ## Setting up SMTP
 [Go here](smtp.md)

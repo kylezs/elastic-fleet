@@ -2,6 +2,8 @@
 
 This document outlines how to write or update queries that are consistent with the current queries. Osquery is a very flexible tool, however, for our purposes, in order to simplify the process of managing the queries and alerts, there is a standard method of writing the query.
 
+If you're looking for how to apply queries you've written / add them for use. Please see [this document](fleet-setup.md).
+
 ## 1+ / 0 as Pass / Fail
 When a query returns it should only return one value. 1 or higher implies that the device passes that test. 0 implies the device fails that test.
 e.g. 
