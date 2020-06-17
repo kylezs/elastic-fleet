@@ -43,9 +43,13 @@ securityContext:
   runAsUser: 1000
 
 # Won't be required at all with Ingress Controller
+# service:
+#   name: fleet-nodeport
+#   type: NodePort
+#   port: 8080
+
 service:
-  name: fleet-nodeport
-  type: NodePort
+  type: ClusterIP
   port: 8080
 
 resources:
@@ -67,7 +71,7 @@ fleet:
     json: true
     disable_banner: true
   server:
-    tls: true
+    tls: false
   filesystem:
     result_volume: /var/log/fleet
 
@@ -124,18 +128,18 @@ elasticsearch:
       - secret
   # Must be https if xpack.security.http.ssl.enabled: true
   # it's the protocol of the readiness probe
-  protocol: https
+  protocol: http
   esConfig:
     elasticsearch.yml: |
-      xpack.security.audit.enabled: true
-      xpack.security.enabled: true
-      xpack.security.transport.ssl.enabled: true
-      xpack.security.transport.ssl.verification_mode: certificate
-      xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-      xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-      xpack.security.http.ssl.enabled: true
-      xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-      xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+      # xpack.security.audit.enabled: true
+      # xpack.security.enabled: true
+      # xpack.security.transport.ssl.enabled: true
+      # xpack.security.transport.ssl.verification_mode: certificate
+      # xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+      # xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+      # xpack.security.http.ssl.enabled: true
+      # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+      # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
   # mount a volume to access the certs as secrets
   secretMounts:
     - name: elastic-certificates
@@ -155,14 +159,14 @@ elasticsearch:
 
 
 kibana:
-  elasticsearchHosts: https://elasticsearch-master:9200/
-  service:
-    type: NodePort
-    # Port the NodePort uses to access the service
-    port: 5601
-    # The port that the container exposes (default for kibana is 5601)
-    targetPort: 5601
-  protocol: https
+  elasticsearchHosts: http://elasticsearch-master:9200/
+  # service:
+  #   type: NodePort
+  #   # Port the NodePort uses to access the service
+  #   port: 5601
+  #   # The port that the container exposes (default for kibana is 5601)
+  #   targetPort: 5601
+  protocol: http
   securityContext:
     capabilities:
       # drop the default linux superuser capabilities
@@ -178,15 +182,17 @@ kibana:
         path: /usr/share/kibana/config/certs
   kibanaConfig:
     kibana.yml: |
+        # If load balanced, don't need this
         server.ssl:
-          enabled: true
+          enabled: false
           key: /usr/share/kibana/config/certs/elastic-certificate.pem
           certificate: /usr/share/kibana/config/certs/elastic-certificate.pem
+        xpack.security.enabled: true
         xpack.security.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
         xpack.encryptedSavedObjects.encryptionKey: fhjskloppd678ehkdfdlliverpoolfcr2134231
-        elasticsearch.ssl:
-          certificateAuthorities: /usr/share/kibana/config/certs/elastic-certificate.pem
-          verificationMode: certificate
+        # elasticsearch.ssl:
+        #   certificateAuthorities: /usr/share/kibana/config/certs/elastic-certificate.pem
+        #   verificationMode: certificate
   extraEnvs:
   - name: ELASTICSEARCH_PASSWORD
     valueFrom:

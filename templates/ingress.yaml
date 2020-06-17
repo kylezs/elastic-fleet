@@ -11,10 +11,10 @@ spec:
       paths:
       - backend:
           serviceName: kf-kolide-fleet
-          servicePort: 80
+          servicePort: 8080
   - host: fixpanel.org
     http:
       paths:
       - backend:
           serviceName: kf-kibana
-          servicePort: 80
+          servicePort: 5601
