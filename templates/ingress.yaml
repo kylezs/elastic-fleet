@@ -5,18 +5,12 @@ metadata:
   name: fixpanel-routing-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
 spec:
   rules:
     - host: fleet.fixpanel.org
       http:
         paths:
-          - path: /
-            backend:
-              serviceName: kf-kolide-fleet
-              servicePort: 8080
-          - path: /grpc/
-            backend:
+          - backend:
               serviceName: kf-kolide-fleet
               servicePort: 8080
     - host: fixpanel.org
@@ -26,28 +20,19 @@ spec:
               serviceName: kf-kibana
               servicePort: 5601
 ---
-# http:
-#       paths:
-#       - path: /
-#         backend:
-#           serviceName: myrpcservice
-#           servicePort: http
-#       - path: /myrpcservice.MyRpcMethod/
-#         backend:
-#           serviceName: myrpcservice
-#           servicePort: grpc
 # apiVersion: networking.k8s.io/v1beta1
 # kind: Ingress
 # metadata:
-#   name: fixpanel-grpc-ingress
+#   name: fixpanel-routing-ingress
 #   annotations:
 #     kubernetes.io/ingress.class: nginx
-#     nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+#     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
 # spec:
 #   rules:
-#   - host: fleet.fixpanel.org
-#     http:
-#       paths:
-#       - backend:
-#           serviceName: kf-kolide-fleet
-#           servicePort: 8080
+#     - host: fleet.fixpanel.org
+#       http:
+#         paths:
+#           - path: /api/v1/osquery/
+#             backend:
+#               serviceName: kf-kolide-fleet
+#               servicePort: 8080
