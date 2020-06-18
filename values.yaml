@@ -71,7 +71,7 @@ fleet:
     json: true
     disable_banner: true
   server:
-    tls: false
+    tls: true
   filesystem:
     result_volume: /var/log/fleet
 
@@ -228,3 +228,6 @@ smtp:
   # where the email appears to come from (best to set to the actual from address)
   # which is set in values.secret.yaml as 'user'
   fromAddress: kylezaws@gmail.com
+
+nginx-ingress:
+  configmap

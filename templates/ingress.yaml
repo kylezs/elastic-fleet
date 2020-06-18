@@ -1,7 +1,8 @@
+---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: my-new-ingress
+  name: fixpanel-routing-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
@@ -18,3 +19,19 @@ spec:
       - backend:
           serviceName: kf-kibana
           servicePort: 5601
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fixpanel-grpc-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+spec:
+  rules:
+  - host: fleet.fixpanel.org
+    http:
+      paths:
+      - backend:
+          serviceName: kf-kolide-fleet
+          servicePort: 8080

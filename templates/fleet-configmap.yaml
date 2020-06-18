@@ -28,7 +28,7 @@ data:
       key: /etc/pki/fleet/tls.key
       # default false because load balancer does not require it
       tls: {{ default false .Values.fleet.server.tls }}
-      tlsprofile: modern
+      # tlsprofile: modern
       url_prefix: ""
     auth:
       jwt_key: <placeholder for secret>
