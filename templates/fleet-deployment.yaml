@@ -38,7 +38,7 @@ spec:
           emptyDir: {}
         - name: fleet-tls
           secret:
-            secretName: {{template "kolide-fleet.fullname" . }}-tls
+            secretName: letsencrypt-staging-tls
         - name: filebeat-configuration
           configMap:
             name: filebeat-config
@@ -65,7 +65,7 @@ spec:
                   key: fleet.mysql.password
             # must be false for Load Balancer use
             - name: KOLIDE_SERVER_TLS
-              value: "false"
+              value: "true"
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

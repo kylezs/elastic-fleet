@@ -5,7 +5,12 @@ metadata:
   name: fixpanel-routing-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
+  tls:
+    - hosts:
+        - fleet.fixpanel.org
+      secretName: letsencrypt-staging-tls
   rules:
     - host: fleet.fixpanel.org
       http:
@@ -13,26 +18,30 @@ spec:
           - backend:
               serviceName: kf-kolide-fleet
               servicePort: 8080
-    - host: fixpanel.org
+    # - host: fixpanel.org
+    #   http:
+    #     paths:
+    #       - backend:
+    #           serviceName: kf-kibana
+    #           servicePort: 5601
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fixpanel-grpc-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+spec:
+  tls:
+    - hosts:
+        - fleet.fixpanel.org
+      secretName: letsencrypt-staging-tls
+  rules:
+    - host: fleet.fixpanel.org
       http:
         paths:
-          - backend:
-              serviceName: kf-kibana
-              servicePort: 5601
----
-# apiVersion: networking.k8s.io/v1beta1
-# kind: Ingress
-# metadata:
-#   name: fixpanel-routing-ingress
-#   annotations:
-#     kubernetes.io/ingress.class: nginx
-#     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-# spec:
-#   rules:
-#     - host: fleet.fixpanel.org
-#       http:
-#         paths:
-#           - path: /api/v1/osquery/
-#             backend:
-#               serviceName: kf-kolide-fleet
-#               servicePort: 8080
+          - path: /kolide.agent.Api
+            backend:
+              serviceName: kf-kolide-fleet
+              servicePort: 8080
