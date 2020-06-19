@@ -17,9 +17,9 @@ data:
               "log.offset", "unixTime"]
     output.elasticsearch:
       host: '${NODE_NAME}'
-      hosts: 'https://elasticsearch-master:9200'
-      protocol: https
-      ssl.certificate_authorities: ['/etc/pki/root/elastic-certificate.pem']
+      hosts: 'http://elasticsearch-master:9200'
+      protocol: http
       username: '${ELASTICSEARCH_USERNAME}'
       password: '${ELASTICSEARCH_PASSWORD}'
 ---
+
