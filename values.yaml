@@ -158,6 +158,9 @@ elasticsearch:
 
 kibana:
   elasticsearchHosts: http://elasticsearch-master:9200/
+  # use this custom image, only way to use plugins as of writing
+  image: docker.io/kylezs/kibana-elastalert
+  imageTag: latest
   # service:
   #   type: NodePort
   #   # Port the NodePort uses to access the service
@@ -187,10 +190,9 @@ kibana:
           certificate: /usr/share/kibana/config/certs/elastic-certificate.pem
         xpack.security.enabled: true
         xpack.security.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
-        xpack.encryptedSavedObjects.encryptionKey: fhjskloppd678ehkdfdlliverpoolfcr2134231
-        # elasticsearch.ssl:
-        #   certificateAuthorities: /usr/share/kibana/config/certs/elastic-certificate.pem
-        #   verificationMode: certificate
+        xpack.encrypted_saved_objects.encryptionKey: fhjskloppd678ehkdfdlliverpoolfcr2134231
+        elastalert-kibana-plugin.serverHost: elastalert
+        elastalert-kibana-plugin.serverPort: 3030
   extraEnvs:
   - name: ELASTICSEARCH_PASSWORD
     valueFrom:
@@ -214,7 +216,7 @@ elastalert:
   elasticsearch:
     host: elasticsearch-master
     port: 9200
-    useSsl: true
+    useSsl: false
     verifyCerts: false
     credentialsSecret: elastic-credentials
     credentialsSecretUsernameKey: username
@@ -227,7 +229,4 @@ smtp:
   useTLS: true
   # where the email appears to come from (best to set to the actual from address)
   # which is set in values.secret.yaml as 'user'
-  fromAddress: kylezaws@gmail.com
-
-nginx-ingress:
-  configmap
+  fromAddress: xkazlazx@gmail.com

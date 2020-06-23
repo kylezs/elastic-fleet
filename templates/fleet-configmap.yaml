@@ -55,3 +55,5 @@ data:
       result_log_file: {{ .Values.fleet.filesystem.result_volume }}/result.log
       # when the log gets to 500MB or 28 days, whichever is first
       enable_log_rotation: true
+---
+

@@ -46,19 +46,18 @@ spec:
               readOnly: true
               mountPath: /opt/elastalert/config.yaml
               subPath: config.yaml
-            - name: elastalert-rules
-              readOnly: true
-              mountPath: /opt/elastalert/rules
+            # configmaps are apparently read only, therefore this won't work with the
+            # elastalert kibana plugin
+            # - name: elastalert-rules
+            #   readOnly: false
+            #   mountPath: /opt/elastalert/rules
             - name: smtp-auth
               readOnly: true
               mountPath: /tmp/smtp/smtp_auth.yaml
               subPath: smtp_auth.yaml
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
 ---
-# docker run -d -p 3030:3030 -p 3333:3333 \
-#     -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
-#     -v `pwd`/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml \
-#     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
-#     -v `pwd`/rules:/opt/elastalert/rules \
-#     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
-#     --net="host" \
-#     --name elastalert bitsensor/elastalert:latest
+

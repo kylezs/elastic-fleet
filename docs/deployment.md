@@ -19,12 +19,19 @@ cd ...
 A domain name is required for setting up a [kolide launcher package](packaging-launcher.md) and for using a TLS protected load balancer.
 
 
-SSL cert rotation
+SSL cert rotation with Cert manager
+
+Helm install should be used with release name `kf`
+
 
 ## Setting up Ingress
 We set up an Ingress (Load Balancer) in order to route traffic to each user facing application (Kibana and Kolide fleet). It also allows us to manage TLS in a central location, and means we don't need to use/remember a port when accessing our services (as we would if we just used NodePort), we can just use the domain.
 
 [This is Linode's guide for setting up an ingress, that was followed here](https://www.linode.com/docs/kubernetes/how-to-deploy-nginx-ingress-on-linode-kubernetes-engine/#install-the-nginx-ingress-controller)
+
+TODO: Check if these values are actually necessary now (after grpc setup)
+
+You should install with this: `helm upgrade nginx-ingress stable/nginx-ingress --values nginx-values.yaml`
 
 Start from "Install the NGINX Ingress Controller"
 

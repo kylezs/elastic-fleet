@@ -1,0 +1,42 @@
+{
+  "type": "response",
+  "@timestamp": "2020-06-22T05:49:05Z",
+  "tags": [],
+  "pid": 6,
+  "method": "post",
+  "statusCode": 500,
+  "req": {
+    "url": "/api/elastalert/rules/Blacklist",
+    "method": "post",
+    "headers": {
+      "host": "fixpanel.org",
+      "x-request-id": "8e8c73660d085177e5a3d1209cd1a8ad",
+      "x-real-ip": "10.2.50.64",
+      "x-forwarded-for": "10.2.50.64",
+      "x-forwarded-host": "fixpanel.org",
+      "x-forwarded-port": "443",
+      "x-forwarded-proto": "https",
+      "x-scheme": "https",
+      "content-length": "427",
+      "accept": "application/json, text/plain, */*",
+      "kbn-version": "7.5.0",
+      "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
+      "content-type": "application/json;charset=UTF-8",
+      "origin": "https://fixpanel.org",
+      "sec-fetch-site": "same-origin",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-dest": "empty",
+      "referer": "https://fixpanel.org/app/elastalert-kibana-plugin",
+      "accept-encoding": "gzip, deflate, br",
+      "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
+    },
+    "remoteAddress": "10.2.1.62",
+    "userAgent": "10.2.1.62",
+    "referer": "https://fixpanel.org/app/elastalert-kibana-plugin"
+  },
+  "res": {
+    "statusCode": 500,
+    "responseTime": 106,
+    "contentLength": 9
+  },
+  "message": "POST /api/elastalert/rules/Blacklist 500 106ms - 9.0B"

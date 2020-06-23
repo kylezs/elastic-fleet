@@ -20,6 +20,8 @@ dependencies:
   - name: "elasticsearch"
     version: 7.7.0
     repository: "https://helm.elastic.co"
+  # this will pull a custom kibana 7.5 image for use with elastalert,
+  # but we use the latest chart
   - name: "kibana"
     version: 7.7.0
     repository: "https://helm.elastic.co"

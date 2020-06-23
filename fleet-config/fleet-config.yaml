@@ -1,0 +1,20 @@
+# To be applied using the fleetctl CLI
+---
+apiVersion: v1
+kind: config
+spec:
+  smtp_settings:
+    authentication_method: authmethod_plain
+    authentication_type: authtype_username_password
+    domain: example.org
+    enable_smtp: true
+    enable_ssl_tls: true
+    enable_start_tls: true
+    password: supersekretsmtppass
+    port: 587
+    sender_address: fleet@example.org
+    server: mail.example.org
+    user_name: test_user
+    verify_ssl_certs: true
+---
+

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: elastalert-rules-configmap
 data:
-  example_freq.yaml: |
+  match_any.yaml: |
     es_host: elasticsearch-master
     es_port: 9200
     name: Test rule - Just to see if SMTP works
@@ -21,29 +21,26 @@ data:
     from_addr: {{ .Values.smtp.fromAddress }}
     smtp_auth_file: "/tmp/smtp/smtp_auth.yaml"
 ---
-
 # compare_key: snapshot.compliant
 # blacklist:
 #   - 0
 # alert: email
 # email: zsembery.kyle@gmail.com
 
-
-
-  # example_rule.yaml: |
-  #   es_host: elasticsearch-master
-  #   es_port: 9200
-  #   name: Blacklist compliance test
-  #   type: blacklist
-  #   index: filebeat-*
-  #   compare_key: snapshot.compliant
-  #   filter: []
-  #   blacklist:
-  #     - 0
-  #   num_events: 1
-  #   timeframe:
-  #       minutes: 1
-  #   alert:
-  #   - "email"
-  #   email:
-  #   - "kyle@kylezsembery.com"
+# example_rule.yaml: |
+#   es_host: elasticsearch-master
+#   es_port: 9200
+#   name: Blacklist compliance test
+#   type: blacklist
+#   index: filebeat-*
+#   compare_key: snapshot.compliant
+#   filter: []
+#   blacklist:
+#     - 0
+#   num_events: 1
+#   timeframe:
+#       minutes: 1
+#   alert:
+#   - "email"
+#   email:
+#   - "kyle@kylezsembery.com"
