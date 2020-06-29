@@ -38,7 +38,7 @@ spec:
           emptyDir: {}
         - name: fleet-tls
           secret:
-            secretName: letsencrypt-staging-tls
+            secretName: letsencrypt-prod-tls
         - name: filebeat-configuration
           configMap:
             name: filebeat-config

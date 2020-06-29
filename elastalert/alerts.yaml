@@ -1,0 +1,17 @@
+# Keep alerts here for versioning / backup
+---
+es_host: elasticsearch-master
+es_port: 9200
+name: Is something not compliant?
+index: filebeat-*
+type: blacklist
+compare_key: snapshot.compliant
+blacklist:
+  - "0"
+alert:
+  - "email"
+email:
+  - "zsembery.kyle@gmail.com"
+smtp_auth_file: "/tmp/smtp/smtp_auth.yaml"
+---
+

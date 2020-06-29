@@ -32,44 +32,12 @@ spec:
 apiVersion: v1
 kind: query
 spec:
-  name: os-up-to-date-dar
-  description: Pass if macOS version is above a certain version. Version must be a string like '2.3.2'
-  query: select case when version >= '10.15.5' then 1 else 0 end as compliant from os_version;
-  support:
-    platforms:
-      - darwin
----
-apiVersion: v1
-kind: query
-spec:
-  name: auto-check-enabled-dar
-  description: Check if updates are automatically checked for
+  name: os-auto-update-enabled-dar
+  description: Check if automatic update is enabled
   query: >
     select case when
     value='true' then 1 else 0 end as compliant
-    from preferences where domain='com.apple.SoftwareUpdate' and host='current' and key="AutomaticCheckEnabled";
-  platform:
-    - darwin
----
-apiVersion: v1
-kind: query
-spec:
-  name: auto-update-download-enabled-dar
-  description: Check if updates automatically download
-  query: >
-    select case when
-    value='true' then 1 else 0 end as compliant
-    from preferences where domain='com.apple.SoftwareUpdate' and host='current' and key='AutomaticDownload';
----
-apiVersion: v1
-kind: query
-spec:
-  name: critical-update-install-enabled-dar
-  description: Check if critical updates are automatically installed
-  query: >
-    select case when
-    value='true' then 1 else 0 end as compliant
-    from preferences where domain='com.apple.SoftwareUpdate' and host='current' and key='CriticalUpdateInstall';
+    from preferences where domain='com.apple.commerce' and host='current' and key='AutoUpdate';
 ---
 apiVersion: v1
 kind: query
@@ -105,3 +73,15 @@ spec:
   support:
     platforms:
       - darwin
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ms-office-up-to-date-dar
+  description: Checks if ms office is above a particular version
+  query: select case when remote_login = 0 then 1 else 0 end as compliant from sharing_preferences
+  support:
+    platform:
+      - darwin
+---
+

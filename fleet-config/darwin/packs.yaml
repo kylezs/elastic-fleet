@@ -15,15 +15,17 @@ spec:
     - query: screenlock-enabled-dar
       interval: 60
       snapshot: true
-    - query: os-up-to-date-dar
+    - query: os-auto-update-enabled-dar
       interval: 60
       snapshot: true
-    - query: auto-update-enabled-dar
-      interval: 60
-      snapshot: true
+    # - query: auto-update-enabled-dar
+    #   interval: 60
+    #   snapshot: true
     - query: remote-login-enabled-dar
       interval: 60
       snapshot: true
   targets:
     labels:
       - macOS
+---
+
