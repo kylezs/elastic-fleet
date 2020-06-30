@@ -224,9 +224,10 @@ elastalert:
 
 #NB: username and password comes from values.secret.yaml
 smtp:
-  host: smtp.gmail.com
+  host: smtp.webmo.fr
+  # Must use 465 with the currently used version of elastalert
   port: 465
   useTLS: true
   # where the email appears to come from (best to set to the actual from address)
   # which is set in values.secret.yaml as 'user'
-  fromAddress: xkazlazx@gmail.com
+  fromAddress: fixpanel@alais.org

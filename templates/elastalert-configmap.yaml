@@ -31,9 +31,17 @@ data:
     # How often ElastAlert will query elasticsearch
     # The unit can be anything from weeks to seconds
     run_every:
-      minutes: 2
+      minutes: 5
 
     # ElastAlert will buffer results from the most recent
     # period of time, in case some log sources are not in real time
     buffer_time:
       hours: 6
+    
+    smtp_host: {{ .Values.smtp.host }}
+    # the TLS port
+    smtp_port: {{ .Values.smtp.port }}
+    # will use TLS if this is true, NOT SSL
+    smtp_ssl : {{ .Values.smtp.useTLS }}
+    from_addr: {{ .Values.smtp.fromAddress }}
+    smtp_auth_file: "/tmp/smtp/smtp_auth.yaml"
