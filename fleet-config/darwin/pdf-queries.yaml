@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: query
+spec:
+  name: preview-up-to-date-dar
+  description: Pass if preview isn't installed or it is installed AND the version is above the version specified
+  query: >
+    select bundle_identifier, bundle_short_version, case when bundle_short_version >= '11.0'
+    then 1 else 0 end as compliant
+    from apps where bundle_identifier = 'com.apple.Preview';
+  support:
+    platform:
+      - darwin
+---
+apiVersion: v1
+kind: query
+spec:
+  name: adobe-reader-up-to-date-dar
+  description: Pass if adobe reader isn't installed or it is installed AND the version is above the version specified
+  query: >
+    select bundle_identifier, bundle_short_version, case when bundle_short_version >= '20.009.20067'
+    then 1 else 0 end as compliant
+    from apps where bundle_identifier = 'com.adobe.Reader';
+  support:
+    platform:
+      - darwin
+---

@@ -13,7 +13,7 @@ data:
         - drop_fields:
             fields: ["log.file.path", "numerics", "epoch", "ecs.version", "counter",
               "action", "suricata.eve.timestamp", "input.type",
-              "agent.ephemeral_id", "agent.hostname", "agent.id", "agent.version",
+              "agent.ephemeral_id", "agent.hostname", "agent.id", "agent.version", "host.name",
               "log.offset", "unixTime"]
     output.elasticsearch:
       host: '${NODE_NAME}'

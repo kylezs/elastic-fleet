@@ -13,27 +13,41 @@ cd ...
 2. [Setup a Kubernetes Cluster - This is the LKE guide](https://www.linode.com/docs/kubernetes/deploy-and-manage-a-cluster-with-linode-kubernetes-engine-a-tutorial/)
 
 
-3. Setup the secrets. You will find a file called `secrets.example.yaml` this should be renamed to `values.secret.yaml` and the values within changed to your secret values. You should not share these values with anyone. Once deployed, this file can be removed and/or the values changed so as not to reflect the values of the secrets in production.
+3. Enter the secrets. You will find a file called `secrets.example.yaml` this should be renamed to `values.secret.yaml` and the values within changed to your secret values. You should not share these values with anyone. Once deployed, this file can be removed and/or the values changed so as not to reflect the values of the secrets in production.
 
 4. Ensure you have a domain name.
 A domain name is required for setting up a [kolide launcher package](packaging-launcher.md) and for using a TLS protected load balancer.
 
 
-SSL cert rotation with Cert manager
+5. Setting up Ingress
+We set up an Ingress in order to route traffic to each user facing application (Kibana and Kolide fleet). It also allows us to manage TLS in a central location, and means we don't need to use/remember a port when accessing our services (as we would if we just used NodePort), we can just use the domain.
 
-Helm install should be used with release name `kf`
+```
+$ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+$ helm install nginx-ingress stable/nginx-ingress --set controller.publishService.enabled=true
+```
 
+This should create a Load Balancer in whichever cloud provider you use, and its traffic will be routed to the nginx-ingress-controller within your cluster automatically. 
 
-## Setting up Ingress
-We set up an Ingress (Load Balancer) in order to route traffic to each user facing application (Kibana and Kolide fleet). It also allows us to manage TLS in a central location, and means we don't need to use/remember a port when accessing our services (as we would if we just used NodePort), we can just use the domain.
+>Note that due to limitations of Kolide Fleet, TLS terminates at the Fleet server for all Fleet requests (both HTTPS and GRPCS) but TLS terminates at the Load Balancer for any Kibana requests.
 
-[This is Linode's guide for setting up an ingress, that was followed here](https://www.linode.com/docs/kubernetes/how-to-deploy-nginx-ingress-on-linode-kubernetes-engine/#install-the-nginx-ingress-controller)
+The Ingresses are already contained in [ingress.yaml](../templates/ingress.yaml) and already contain reference to the production TLS cert, managed by Cert Manager.
 
-TODO: Check if these values are actually necessary now (after grpc setup)
+6. Create A records, one that will route to the Kolide Fleet server, and one that will route to the Kibana dashboard. Point both to the Load Balancer's IP (find the Load Balancer in your cloud provider). The Ingress controller handles the routing of requests.
 
-You should install with this: `helm upgrade nginx-ingress stable/nginx-ingress --values nginx-values.yaml`
+7. Certificates
+The only certicate is managed by Cert Manager. Follow their [installation docs](https://cert-manager.io/docs/installation/kubernetes/) for creating the issuer.
+>Note if you change the issuer name from `letsencrypt-prod` you will need to change the ref in [certificate-prod.yaml](../certificate-prod.yaml)
 
-Start from "Install the NGINX Ingress Controller"
+For production you will need to use:
+`kubectl apply -f certificate-prod.yaml`
+It may take up to an hour for Let's Encrypt to sign the request.
+
 
 ## Setting up SMTP
 [Go here](smtp.md)
+
+
+
+
+Helm install should be used with release name `kf`

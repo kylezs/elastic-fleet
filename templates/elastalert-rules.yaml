@@ -13,13 +13,6 @@ data:
     - "email"
     email:
     - "zsembery.kyle@gmail.com"
-    smtp_host: {{ .Values.smtp.host }}
-    # the TLS port
-    smtp_port: {{ .Values.smtp.port }}
-    # will use TLS if this is true, NOT SSL
-    smtp_ssl : {{ .Values.smtp.useTLS }}
-    from_addr: {{ .Values.smtp.fromAddress }}
-    smtp_auth_file: "/tmp/smtp/smtp_auth.yaml"
 ---
 # compare_key: snapshot.compliant
 # blacklist:
