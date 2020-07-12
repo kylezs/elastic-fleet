@@ -10,11 +10,22 @@ data:
         - {{ .Values.fleet.filesystem.result_volume }}/result.log
       json.keys_under_root: true
       processors:
+        - dissect:
+            tokenizer: "%{base64email}-launcher.%{restofpackagename}"
+            field: "decorations.downloaded_name"
+            target_prefix: ""
+        - decode_base64_field:
+            field:
+              from: "base64email"
+              to: "email"
+            ignore_missing: true
+            fail_on_error: false
         - drop_fields:
             fields: ["log.file.path", "numerics", "epoch", "ecs.version", "counter",
               "action", "suricata.eve.timestamp", "input.type",
               "agent.ephemeral_id", "agent.hostname", "agent.id", "agent.version", "host.name",
-              "log.offset", "unixTime"]
+              "log.offset", "unixTime", "restofpackagename", "decorations.downloaded_name",
+              "base64email"]
     output.elasticsearch:
       host: '${NODE_NAME}'
       hosts: 'http://elasticsearch-master:9200'

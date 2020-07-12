@@ -161,12 +161,6 @@ kibana:
   # use this custom image, only way to use plugins as of writing
   image: docker.io/kylezs/kibana-elastalert
   imageTag: latest
-  # service:
-  #   type: NodePort
-  #   # Port the NodePort uses to access the service
-  #   port: 5601
-  #   # The port that the container exposes (default for kibana is 5601)
-  #   targetPort: 5601
   protocol: http
   securityContext:
     capabilities:
@@ -190,7 +184,7 @@ kibana:
           certificate: /usr/share/kibana/config/certs/elastic-certificate.pem
         xpack.security.enabled: true
         xpack.security.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
-        xpack.encrypted_saved_objects.encryptionKey: fhjskloppd678ehkdfdlliverpoolfcr2134231
+        xpack.encrypted_saved_objects.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
         elastalert-kibana-plugin.serverHost: elastalert
         elastalert-kibana-plugin.serverPort: 3030
   extraEnvs:
