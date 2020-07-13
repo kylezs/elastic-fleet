@@ -1,1 +1,7 @@
 *.secret.yaml
+fixpanel*
+
+
+# elastic certs
+elastic-certificate.pem
+elastic-certificates.p12

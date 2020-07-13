@@ -1,5 +1,6 @@
 # # Set up the PV and PVC for MySQL
-
+# PVC specified here so it's not torn down by an uninstall
+# if created by the pod itself
 
 # Required for minikube...
 # apiVersion: v1
@@ -23,7 +24,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: kf-mysql-pvc
+  name: mysql-pvc
   annotations:
     helm.sh/resource-policy: keep
 spec:

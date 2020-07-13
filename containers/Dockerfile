@@ -1,4 +1,5 @@
 # Creates custom kibana image, so it has the elastalert plugin
+# Stored at docker.io/kylezs/kibana-elastalert
 
 FROM docker.elastic.co/kibana/kibana:7.5.0
 

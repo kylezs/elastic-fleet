@@ -6,7 +6,7 @@ data:
   config.yml: |-
     mysql:
       protocol: tcp
-      address: kf-mysql:3306
+      address: {{ .Release.Name }}-mysql:3306
       # username: <placeholder for secret>
       # password: <placeholder for secret>
       # database: <placeholder for secret>
@@ -18,7 +18,7 @@ data:
       max_open_conns: 50
       max_idle_conns: 50
     redis:
-      address: kf-redis-master:6379
+      address: {{ .Release.Name }}-redis-master:6379
       cluster.slaveCount: 0
       master.persistence.enabled: false
       usePassword: false

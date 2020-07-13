@@ -38,13 +38,10 @@ spec:
           emptyDir: {}
         - name: fleet-tls
           secret:
-            secretName: letsencrypt-prod-tls
+            secretName: {{ .Values.certs.certName }}
         - name: filebeat-configuration
           configMap:
             name: filebeat-config
-        - name: elastic-cert
-          secret:
-            secretName: elastic-certificate-pem
       containers:
         - name: {{ .Chart.Name }}
           env:
@@ -125,8 +122,5 @@ spec:
               mountPath: /etc/filebeat.yml
               subPath: filebeat.yml
               readOnly: true
-            - name: elastic-cert
-              readOnly: true
-              mountPath: /etc/pki/root
 
 

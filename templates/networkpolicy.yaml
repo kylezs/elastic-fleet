@@ -43,11 +43,11 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: kf-mysql
+      app: {{ .Release.Name }}-mysql
   ingress:
     - from:
         - podSelector:
             matchLabels:
-              app: kf-kolide-fleet-job
+              app: {{ .Release.Name }}-kolide-fleet-job
 ---
 

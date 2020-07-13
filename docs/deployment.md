@@ -10,7 +10,18 @@ This application is a helm chart. To deploy you will first need to have [helm in
 
 3. Enter the secrets. You will find a file called `secrets.example.yaml` this should be renamed to `values.secret.yaml` and the values within changed to your secret values. You should not share these values with anyone. Once deployed, this file can be removed and/or the values changed so as not to reflect the values of the secrets in production.
 
-4. Ensure you have a domain name.
+For elastic, the secrets can be generated with scripts. Note, to generate the kibana encryption key you will need Docker running.
+
+In `/creds`
+Open the script and enter the values of the secrets you want to use
+NB: These will be the credentials of the kibana admin account. It's advised you keep the admin username to `elastic` for convention adherance.
+```
+sh elastic-creds.sh
+sh generate-es-certs.sh
+```
+
+
+1. Ensure you have a domain name.
 A domain name is required for setting up a [kolide launcher package](packaging-launcher.md) and for using a TLS protected load balancer.
 
 
@@ -32,6 +43,7 @@ The Ingresses are already contained in [ingress.yaml](../templates/ingress.yaml)
 
 2. Certificates
 
+## NEEDS REVIEW AFTER REFACTOR
 The only certicate is managed by Cert Manager. Follow their [installation docs](https://cert-manager.io/docs/installation/kubernetes/) for creating the issuer.
 >Note if you change the issuer name from `letsencrypt-prod` you will need to change the ref in [certificate-prod.yaml](../certificate-prod.yaml)
 

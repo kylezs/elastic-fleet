@@ -1,4 +1,4 @@
-# Default values for kolide-fleet.
+# Default values for elastic-fleet.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -30,37 +30,38 @@ serviceAccount:
 podAnnotations:
   seccomp.security.alpha.kubernetes.io/pod: runtime/default
 
-podSecurityContext:
-  {}
+podSecurityContext: {}
 
 securityContext:
   capabilities:
     # drop the default linux superuser capabilities
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
 
-# Won't be required at all with Ingress Controller
-# service:
-#   name: fleet-nodeport
-#   type: NodePort
-#   port: 8080
+# controls which certs are deployed/used by cert manager
+certs:
+  certName: kolide-fleet-tls
+  # staging, dev, prod
+  mode: dev
+  # Include root domain and any subdomains used
+  dnsNames:
+    - example.com
+    - fleet.example.com
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 8080
 
-resources:
-  {}
+resources: {}
 
 autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 1
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
 
 fleet:
   # to be handled by secrets
@@ -83,7 +84,7 @@ mysql:
   mysqlDatabase: <placeholder for secret>
   persistence:
     enabled: true
-    existingClaim: kf-mysql-pvc
+    existingClaim: mysql-pvc
   podLabels:
     # targetted by network policy
     role: fleet-backend
@@ -101,14 +102,12 @@ redis:
   # this may break some other stuff
   # networkPolicy.enabled: true
 
-
 elasticsearch:
   replicas: 1
   volumeClaimTemplate:
-    accessModes: [ "ReadWriteOnce" ]
+    accessModes: ["ReadWriteOnce"]
     resources:
       requests:
-        # default is 30Gi
         storage: 10Gi
   podSecurityPolicy:
     name: "elasticsecuritypolicy"
@@ -120,43 +119,45 @@ elasticsearch:
       hostPID: false
       hostNetwork: false
       volumes:
-      - persistentVolumeClaim
-      - configMap
-      - secret
+        - persistentVolumeClaim
+        - configMap
+        - secret
   # Must be https if xpack.security.http.ssl.enabled: true
   # it's the protocol of the readiness probe
   protocol: http
   esConfig:
     elasticsearch.yml: |
-      # xpack.security.audit.enabled: true
+      # enabled so authentication / login is enabled
       xpack.security.enabled: true
       xpack.security.transport.ssl.enabled: true
       xpack.security.transport.ssl.verification_mode: certificate
       xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
       xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-      # These should NOT be enabled with a load balancer
+      # These should NOT be enabled with a load balancer, the LB should terminate the TLS
       # xpack.security.http.ssl.enabled: true
       # xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
       # xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
-  # mount a volume to access the certs as secrets
+  extraEnvs:
+    - name: ELASTIC_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: password
+    - name: ELASTIC_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: username
+  # even though we use http (behind the LB), tls is required for transport layer
+  # security 
   secretMounts:
     - name: elastic-certificates
       secretName: elastic-certificates
       path: /usr/share/elasticsearch/config/certs
-  extraEnvs:
-  - name: ELASTIC_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: elastic-credentials
-        key: password
-  - name: ELASTIC_USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: elastic-credentials
-        key: username
-
 
 kibana:
+  service:
+    type: NodePort
   elasticsearchHosts: http://elasticsearch-master:9200/
   # use this custom image, only way to use plugins as of writing
   image: docker.io/kylezs/kibana-elastalert
@@ -166,43 +167,43 @@ kibana:
     capabilities:
       # drop the default linux superuser capabilities
       drop:
-      - ALL
+        - ALL
     # Needs to write a UUID file
     readOnlyRootFilesystem: false
     runAsNonRoot: true
     runAsUser: 1000
   secretMounts:
-      - name: elastic-certificate-pem
-        secretName: elastic-certificate-pem
-        path: /usr/share/kibana/config/certs
+    - name: elastic-certificate-pem
+      secretName: elastic-certificate-pem
+      path: /usr/share/kibana/config/certs
   kibanaConfig:
     kibana.yml: |
         # If load balanced, don't need this
         server.ssl:
           enabled: false
-          key: /usr/share/kibana/config/certs/elastic-certificate.pem
-          certificate: /usr/share/kibana/config/certs/elastic-certificate.pem
+          # key: /usr/share/kibana/config/certs/elastic-certificate.pem
+          # certificate: /usr/share/kibana/config/certs/elastic-certificate.pem
         xpack.security.enabled: true
         xpack.security.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
         xpack.encrypted_saved_objects.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
         elastalert-kibana-plugin.serverHost: elastalert
         elastalert-kibana-plugin.serverPort: 3030
   extraEnvs:
-  - name: ELASTICSEARCH_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: elastic-credentials
-        key: password
-  - name: ELASTICSEARCH_USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: elastic-credentials
-        key: username
-  - name: KIBANA_ENCRYPTION_KEY
-    valueFrom:
-      secretKeyRef:
-        name: kibana
-        key: encryptionkey
+    - name: ELASTICSEARCH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: password
+    - name: ELASTICSEARCH_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: username
+    - name: KIBANA_ENCRYPTION_KEY
+      valueFrom:
+        secretKeyRef:
+          name: kibana
+          key: encryptionkey
   readinessProbe:
     initialDelaySeconds: 30
 
@@ -216,12 +217,13 @@ elastalert:
     credentialsSecretUsernameKey: username
     credentialsSecretPasswordKey: password
 
+# Used to send emails from elastalert
 #NB: username and password comes from values.secret.yaml
 smtp:
-  host: smtp.webmo.fr
+  host: smpt.example.com
   # Must use 465 with the currently used version of elastalert
   port: 465
   useTLS: true
   # where the email appears to come from (best to set to the actual from address)
   # which is set in values.secret.yaml as 'user'
-  fromAddress: fixpanel@alais.org
+  fromAddress: example@example.com
