@@ -1,53 +1,52 @@
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: NetworkPolicy
-# metadata:
-#   name: fleet-db-network-policy
-#   namespace: default
-# spec:
-#   podSelector:
-#     matchLabels:
-#       # redis and mysql
-#       role: fleet-backend
-#   ingress:
-#     - from:
-#         - podSelector:
-#             matchLabels:
-#               app: kolide-fleet
-# # ---
-# # apiVersion: networking.k8s.io/v1
-# # kind: NetworkPolicy
-# # metadata:
-# #   name: elastic-network-policy
-# #   namespace: default
-# # spec:
-# #   podSelector:
-# #     matchLabels:
-# #       app: elasticsearch-master
-# #   ingress:
-# #     - from:
-# #         - podSelector:
-# #             # filebeat, kibana and elastalert need to connect, ingress for mobile POSTs
-# #             matchExpressions:
-# #               - {
-# #                   key: app,
-# #                   operator: In,
-# #                   values: [kolide-fleet, kibana, elastalert, nginx-ingress],
-# #                 }
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: NetworkPolicy
-# metadata:
-#   name: fleet-db-migrate-job-policy
-#   namespace: default
-# spec:
-#   podSelector:
-#     matchLabels:
-#       app: {{ .Release.Name }}-mysql
-#   ingress:
-#     - from:
-#         - podSelector:
-#             matchLabels:
-#               app: {{ .Release.Name }}-kolide-fleet-job
-# ---
-
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: fleet-db-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      # redis and mysql
+      role: fleet-backend
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: kolide-fleet
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: elastic-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: elasticsearch-master
+  ingress:
+    - from:
+        - podSelector:
+            # filebeat, kibana and elastalert need to connect, ingress for mobile POSTs
+            matchExpressions:
+              - {
+                  key: app,
+                  operator: In,
+                  values: [kolide-fleet, kibana, elastalert, nginx-ingress],
+                }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: fleet-db-migrate-job-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Release.Name }}-mysql
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: {{ .Release.Name }}-kolide-fleet-job
+---
