@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - fixpanel.org
-      secretName: letsencrypt-prod-tls
+        - {{ .Values.certs.dnsSubdomains.kibana }}
+      secretName: {{ .Values.certs.certName }}
   rules:
-    - host: fixpanel.org
+    - host: {{ .Values.certs.dnsSubdomains.kibana }}
       http:
         paths:
           - backend:
@@ -31,10 +31,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - fleet.fixpanel.org
-      secretName: letsencrypt-prod-tls
+        - {{ .Values.certs.dnsSubdomains.fleet }}
+      secretName: {{ .Values.certs.certName }}
   rules:
-    - host: fleet.fixpanel.org
+    - host: {{ .Values.certs.dnsSubdomains.fleet }}
       http:
         paths:
           - backend:
@@ -55,10 +55,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - fleet.fixpanel.org
-      secretName: letsencrypt-prod-tls
+        - {{ .Values.certs.dnsSubdomains.fleet }}
+      secretName: {{ .Values.certs.certName }}
   rules:
-    - host: fleet.fixpanel.org
+    - host: {{ .Values.certs.dnsSubdomains.fleet }}
       http:
         paths:
           - path: "/kolide.agent.Api"
@@ -77,10 +77,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - fleet.fixpanel.org
-      secretName: letsencrypt-prod-tls
+        - {{ .Values.certs.dnsSubdomains.fleet }}
+      secretName: {{ .Values.certs.certName }}
   rules:
-    - host: fleet.fixpanel.org
+    - host: {{ .Values.certs.dnsSubdomains.fleet }}
       http:
         paths:
           - path: "/kolide.launcher.QueryTarget/GetTargets"
