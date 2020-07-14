@@ -2,27 +2,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: fixpanel-kibana-ingress
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-spec:
-  tls:
-    - hosts:
-        - fixpanel.org
-      secretName: letsencrypt-prod-tls
-  rules:
-    - host: fixpanel.org
-      http:
-        paths:
-          - backend:
-              serviceName: kf-kibana
-              servicePort: 5601
----
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: fixpanel-elasticsearch-post-ingress
+  name: kibana-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -36,18 +16,18 @@ spec:
     - host: fixpanel.org
       http:
         paths:
-          - path: "/mobile-index/_doc"
-            backend:
-              serviceName: elasticsearch-master
-              servicePort: 9200
+          - backend:
+              serviceName: {{ .Release.Name }}-kibana
+              servicePort: 5601
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: fixpanel-fleet-ui-ingress
+  name: fleet-ui-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
 spec:
   tls:
     - hosts:
@@ -58,17 +38,20 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: kf-kolide-fleet
+              serviceName: {{ .Release.Name }}-kolide-fleet
               servicePort: 8080
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: fixpanel-fleet-grpc-agent-ingress
+  name: fleet-grpc-agent-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
-    nginx.ingress.kubernetes.io/grpc-backend: "true"
+    # sometimes buffered logs can increase in size, this is
+    # far greater than should ever be necessary
+    nginx.ingress.kubernetes.io/proxy-body-size: 300M
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
 spec:
   tls:
     - hosts:
@@ -80,13 +63,13 @@ spec:
         paths:
           - path: "/kolide.agent.Api"
             backend:
-              serviceName: kf-kolide-fleet
+              serviceName: {{ .Release.Name }}-kolide-fleet
               servicePort: 8080
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: fixpanel-fleet-grpc-targets-ingress
+  name: fleet-grpc-targets-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
@@ -102,29 +85,53 @@ spec:
         paths:
           - path: "/kolide.launcher.QueryTarget/GetTargets"
             backend:
-              serviceName: kf-kolide-fleet
+              serviceName: {{ .Release.Name }}-kolide-fleet
               servicePort: 8080
----
+# # ---
+# # apiVersion: networking.k8s.io/v1beta1
+# # kind: Ingress
+# # metadata:
+# #   name: fixpanel-websocket-ingress
+# #   annotations:
+# #     kubernetes.io/ingress.class: nginx
+# #     nginx.ingress.kubernetes.io/configuration-snippet: |
+# #       proxy_http_version 1.1;
+# #       proxy_set_header Upgrade "websocket";
+# #       proxy_set_header Connection "Upgrade";
+# # spec:
+# #   tls:
+# #     - hosts:
+# #         - fleet.fixpanel.org
+# #       secretName: letsencrypt-staging-tls
+# #   rules:
+# #     - host: fleet.fixpanel.org
+# #       http:
+# #         paths:
+# #           - path: "/api/v1/kolide/results/"
+# #             backend:
+# #               serviceName: kf-kolide-fleet
+# #               servicePort: 8080
+
+
 # apiVersion: networking.k8s.io/v1beta1
 # kind: Ingress
 # metadata:
-#   name: fixpanel-websocket-ingress
+#   name: elasticsearch-post-ingress
 #   annotations:
 #     kubernetes.io/ingress.class: nginx
-#     nginx.ingress.kubernetes.io/configuration-snippet: |
-#       proxy_http_version 1.1;
-#       proxy_set_header Upgrade "websocket";
-#       proxy_set_header Connection "Upgrade";
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
 # spec:
 #   tls:
 #     - hosts:
-#         - fleet.fixpanel.org
-#       secretName: letsencrypt-staging-tls
+#         - fixpanel.org
+#       secretName: letsencrypt-prod-tls
 #   rules:
-#     - host: fleet.fixpanel.org
+#     - host: fixpanel.org
 #       http:
 #         paths:
-#           - path: "/api/v1/kolide/results/"
+#           - path: "/mobile-index/_doc"
 #             backend:
-#               serviceName: kf-kolide-fleet
-#               servicePort: 8080
+#               serviceName: elasticsearch-master
+#               servicePort: 9200
+# ---

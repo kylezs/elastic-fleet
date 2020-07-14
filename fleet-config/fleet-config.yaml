@@ -4,6 +4,10 @@ apiVersion: v1
 kind: options
 spec:
   config:
+    options:
+      logger_plugin: kolide_grpc
+      distributed_interval: 3600
+      config_refresh: 3600
     decorators:
       load:
         - "SELECT uuid AS host_uuid, computer_name FROM system_info"

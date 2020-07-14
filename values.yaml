@@ -43,13 +43,21 @@ securityContext:
 
 # controls which certs are deployed/used by cert manager
 certs:
-  certName: kolide-fleet-tls
+  # May change depending on if using self-signed or letsencrypt staging/prod
+  certName: letsencrypt-prod-tls
   # staging, dev, prod
   mode: dev
-  # Include root domain and any subdomains used
+  # Include root domain and any subdomains used, used by certs
   dnsNames:
     - example.com
     - fleet.example.com
+  # Used by ingresses, to direct traffic to particular subdomains
+  dnsSubdomains:
+    kibana: example.com
+    fleet: fleet.example.com
+  issuer:
+    email: example@mail.com
+
 
 service:
   type: NodePort

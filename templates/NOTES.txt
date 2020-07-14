@@ -1,5 +1,4 @@
 ## Installation
-You've just installed kolide/kolide-fleet with an accompanying Elasticsearch and Kibana setup to aggregate and store the logs
-produced by the elasticsearch agents.
-If you have just installed kolide/kolide-fleet, the view will prompt you for further installation instructions. These cannot be
-automated during installation; you will need to complete them now.
+THESE INSTALLATION NOTES NEED TO BE UPDATED.
+
+What to do AFTER installation...
