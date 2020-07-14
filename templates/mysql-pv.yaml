@@ -1,26 +1,4 @@
-# # Set up the PV and PVC for MySQL
-# PVC specified here so it's not torn down by an uninstall
-# if created by the pod itself
-
-# Required for minikube...
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   # This is the name used by the quickstart guide
-#   name: kf-mysql-pv
-#   annotations:
-#     meta.helm.sh/release-name: kf
-#     meta.helm.sh/release-namespace: default
-#   labels:
-#     app.kubernetes.io/managed-by: Helm
-# spec:
-#   capacity:
-#     storage: 2Gi
-#   accessModes:
-#     - ReadWriteOnce
-#   persistentVolumeReclaimPolicy: Retain
-#   storageClassName: standard
-# ---
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
