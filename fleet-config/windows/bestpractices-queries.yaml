@@ -40,19 +40,19 @@ spec:
   description: "Count of password managers installed"
   query: >
     SELECT count(name) as compliant FROM programs WHERE
-    LOWER(bundle_name) LIKE '%last%pass%' OR
-    LOWER(bundle_name) LIKE '%1password%' OR
-    LOWER(bundle_name) LIKE '%dashlane%' OR
-    LOWER(bundle_name) LIKE '%enpass%' OR
-    LOWER(bundle_name) LIKE '%mitto%' OR
-    LOWER(bundle_name) LIKE '%myki%' OR
-    LOWER(bundle_name) LIKE '%intuitive%password%' OR
-    LOWER(bundle_name) LIKE '%bitwarden%' OR
-    LOWER(bundle_name) LIKE '%gnome%keyring%' OR
-    LOWER(bundle_name) LIKE '%kee%pass%' OR
-    LOWER(bundle_name) LIKE '%keeper%' OR
-    LOWER(bundle_name) LIKE '%meldium%' OR
-    LOWER(bundle_name) LIKE '%kee%web%';
+    LOWER(name) LIKE '%last%pass%' OR
+    LOWER(name) LIKE '%1password%' OR
+    LOWER(name) LIKE '%dashlane%' OR
+    LOWER(name) LIKE '%enpass%' OR
+    LOWER(name) LIKE '%mitto%' OR
+    LOWER(name) LIKE '%myki%' OR
+    LOWER(name) LIKE '%intuitive%password%' OR
+    LOWER(name) LIKE '%bitwarden%' OR
+    LOWER(name) LIKE '%gnome%keyring%' OR
+    LOWER(name) LIKE '%kee%pass%' OR
+    LOWER(name) LIKE '%keeper%' OR
+    LOWER(name) LIKE '%meldium%' OR
+    LOWER(name) LIKE '%kee%web%';
   support:
     platforms:
       - windows

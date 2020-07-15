@@ -97,47 +97,6 @@ mysql:
   podLabels:
     # targetted by network policy
     role: fleet-backend
-  # initializationFiles:
-  #   mysql-init: |-
-  #     UPDATE mysql.user SET authentication_string = PASSWORD('MYSQL_ROOT_PASSWORD')
-  #     WHERE User = 'root' AND Host = '%';
-  #     UPDATE mysql.user SET authentication_string = PASSWORD('MYSQL_PASSWORD')
-  #     WHERE User = 'MYSQL_USER' AND Host = '%';
-  #     FLUSH PRIVILEGES;
-
-  # extraInitContainers: |
-  #   - name: "update-mysql-init"
-  #     image: "busybox:1.29.3"
-  #     imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
-  #     command: [
-  #       "sh",
-  #       "-ce",
-  #       "cp /docker-entrypoint-initdb.d/mysql-init /tmp/files/mysql-init &&
-  #         sed -i \"s/MYSQL_ROOT_PASSWORD/$MYSQL_ROOT_PASSWORD/g\" /tmp/files/mysql-init &&
-  #         sed -i \"s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g\" /tmp/files/mysql-init &&
-  #         sed -i \"s/MYSQL_USER/$MYSQL_USER/g\" /tmp/files/mysql-init" ]
-  #     env:
-  #       - name: MYSQL_ROOT_PASSWORD
-  #         valueFrom:
-  #           secretKeyRef:
-  #             name: {{ .Release.Name }}-mysql
-  #             key: mysql-password
-  #       - name: MYSQL_PASSWORD
-  #         valueFrom:
-  #           secretKeyRef:
-  #             name: {{ .Release.Name }}-mysql
-  #             key: mysql-root-password
-  #     volumeMounts:
-  #       - name: migrations
-  #         mountPath: /docker-entrypoint-initdb.d
-  #       - name: tmp-files
-  #         mountPath: /tmp/files
-  # extraVolumes: |
-  #   - name: tmp-files
-  #     emptyDir: {}
-  # extraVolumeMounts: |
-  #   - name: tmp-files
-  #     mountPath: /tmp/files
 
 
 redis:

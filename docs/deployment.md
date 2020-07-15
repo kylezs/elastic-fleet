@@ -10,22 +10,14 @@ This application is a helm chart. To deploy you will first need to have [helm in
 
 3. Enter the secrets. You will find a file called `secrets.example.yaml` this should be renamed to `values.secret.yaml` and the values within changed to your secret values. You should not share these values with anyone. Once deployed, this file can be removed and/or the values changed so as not to reflect the values of the secrets in production.
 
-For elastic, the secrets can be generated with scripts. Note, to generate the kibana encryption key you will need Docker running.
-
-In `/creds`
-Open the script and enter the values of the secrets you want to use
-NB: These will be the credentials of the kibana admin account. It's advised you keep the admin username to `elastic` for convention adherance.
-```
-sh elastic-creds.sh
-sh generate-es-certs.sh
-```
+4. Setup elastic certs and kibana key. [See here](../creds/README.md)
 
 
-1. Ensure you have a domain name.
+5. Ensure you have a domain name.
 A domain name is required for setting up a [kolide launcher package](packaging-launcher.md) and for using a TLS protected load balancer.
 
 
-5. Setting up the Load Balancer + Ingress Controller
+6. Setting up the Load Balancer + Ingress Controller
 We set up an Ingress in order to route traffic to each user facing application (Kibana and Kolide fleet). It also allows us to manage TLS in a central location, and means we don't need to use/remember a port when accessing our services (as we would if we just used NodePort), we can just use the domain.
 
 ```

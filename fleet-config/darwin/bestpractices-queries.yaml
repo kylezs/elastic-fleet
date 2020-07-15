@@ -77,9 +77,11 @@ spec:
 apiVersion: v1
 kind: query
 spec:
-  name: ms-auto-download-on
-  description: Checks if MS auto downloads if an update is available
-  query: select case when value='AutomaticDownload' then 1 else 0 end as compliant from preferences where domain like '%com.microsoft.autoupdate%' and key='HowToCheck';
+  name: ms-auto-download-on-dar
+  description: Checks if MS auto downloads if an update is available for current user
+  query: >
+    select case when value='AutomaticDownload' then 1 else 0 end as compliant from preferences where domain like '%com.microsoft.autoupdate%' and key='HowToCheck'
+    and username = (SELECT u.username from users u, logged_in_users liu where liu.user = u.username AND liu.tty = 'console');
   support:
     platform:
       - darwin
@@ -87,54 +89,11 @@ spec:
 apiVersion: v1
 kind: query
 spec:
-  name: ms-auto-start-update-daemon
+  name: ms-auto-start-update-daemon-dar
   description: The auto-update daemon should start when opening an MS office application
-  query: select case when value='true' then 1 else 0 end as compliant from preferences where domain like '%com.microsoft.autoupdate%' and key='StartDaemonOnAppLaunch';
+  query: >
+    select case when value='true' then 1 else 0 end as compliant from preferences where domain like '%com.microsoft.autoupdate%' and key='StartDaemonOnAppLaunch'
+    and username = (SELECT u.username from users u, logged_in_users liu where liu.user = u.username AND liu.tty = 'console');
   support:
     platform:
       - darwin
----
-
-# apiVersion: v1
-# kind: query
-# spec:
-#   name: os-up-to-date-dar
-#   description: Pass if macOS version is above a certain version. Version must be a string like '2.3.2'
-#   query: select case when version >= '10.15.5' then 1 else 0 end as compliant from os_version;
-#   support:
-#     platforms:
-#       - darwin
-# ---
-# ---
-# apiVersion: v1
-# kind: query
-# spec:
-#   name: auto-check-enabled-dar
-#   description: Check if updates are automatically checked for
-#   query: >
-#     select case when
-#     value='true' then 1 else 0 end as compliant
-#     from preferences where domain='com.apple.SoftwareUpdate' and host='current' and key="AutomaticCheckEnabled";
-#   platform:
-#     - darwin
-# ---
-# apiVersion: v1
-# kind: query
-# spec:
-#   name: auto-update-download-enabled-dar
-#   description: Check if updates automatically download
-#   query: >
-#     select case when
-#     value='true' then 1 else 0 end as compliant
-#     from preferences where domain='com.apple.SoftwareUpdate' and host='current' and key='AutomaticDownload';
-# ---
-# apiVersion: v1
-# kind: query
-# spec:
-#   name: critical-update-install-enabled-dar
-#   description: Check if critical updates are automatically installed
-#   query: >
-#     select case when
-#     value='true' then 1 else 0 end as compliant
-#     from preferences where domain='com.apple.SoftwareUpdate' and host='current' and key='CriticalUpdateInstall';
-# ---
