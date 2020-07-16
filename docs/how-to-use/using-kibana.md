@@ -12,7 +12,7 @@ Clicking on one of these dashboards will present you with the last status update
 
 In order to filter down to particular devices, for example, devices of people you manage, it is recommended you save a search containing only these device identifiers.
 
-## How to save a query
+## How to save a new query
 
 You can do this from the dashboard screen.
 

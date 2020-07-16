@@ -4,20 +4,20 @@ spec:
   name: basic-security-settings-win
   queries:
     - query: firewall-enabled-win
-      interval: 180
+      interval: 1800
       snapshot: true
     - query: disk-encryption-enabled-win
-      interval: 180
+      interval: 1800
       snapshot: true
     - query: password-manager-installed-win
-      interval: 180
+      interval: 1800
       snapshot: true
     - query: auto-update-enabled-win
-      interval: 180
+      interval: 1800
       snapshot: true
-    - query: os-up-to-date-win
-      interval: 180
-      snapshot: true
+    # - query: os-up-to-date-win
+    #   interval: 1800
+    #   snapshot: true
   targets:
     labels:
       - MS Windows
