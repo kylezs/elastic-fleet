@@ -2,6 +2,8 @@
 
 This document will briefly outline a clean process of using kibana.
 
+> If you are not seeing the results you expect, or any results at all, please ensure you have the time range set correctly. You can set this in the top right of the screen in Kibana, next to the search bar. It is advised to set from a week ago until now, using the "relative" time, based on the query schedule being used here.
+
 ## Finding endpoint failures
 
 Once you have a set of visualisations set up. You can combine these into a group called a "dashboard" in Kibana.
