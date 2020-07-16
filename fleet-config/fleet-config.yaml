@@ -7,7 +7,9 @@ spec:
     options:
       logger_plugin: kolide_grpc
       distributed_interval: 1800
-      config_refresh: 1800
+      config_refresh: 1200
+      pack_delimiter: ":"
+      pack_refresh_interval: 900
     decorators:
       load:
         - "SELECT uuid AS host_uuid, computer_name FROM system_info"
@@ -18,11 +20,6 @@ spec:
       darwin:
         decorators:
           load:
-            - "SELECT uuid AS host_uuid, computer_name FROM system_info"
             - SELECT value as "downloaded_name" FROM kolide_json where path="/private/etc/launcher/installer-info.json" and key="download_file";
-      windows:
-        decorators:
-          load:
-            - "SELECT uuid AS host_uuid, computer_name FROM system_info"
 ---
 
