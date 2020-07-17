@@ -24,7 +24,9 @@ kind: query
 spec:
   name: screenlock-enabled-dar
   description: Fail if password on lock is enabled or password on lock enables after 5 minutes
-  query: select case when enabled=0 or grace_period=-1 or grace_period > 300 then 0 else 1 end as compliant from screenlock;
+  query: >
+    select case when enabled=0 or grace_period=-1 or grace_period > 300 then 0 else 1 end as compliant FROM kolide_screenlock 
+    where user=(SELECT u.username from users u, logged_in_users liu where liu.user = u.username AND liu.tty = 'console');
   support:
     platforms:
       - darwin

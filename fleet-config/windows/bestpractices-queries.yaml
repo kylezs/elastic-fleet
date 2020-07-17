@@ -60,9 +60,21 @@ spec:
 apiVersion: v1
 kind: query
 spec:
-  name: os-up-to-date-win
-  description: Pass if Windows version is above a certain version. Version must be a string like '2.3.2'
-  query: select case when version >= '10.0.19041' then 1 else 0 end as compliant from os_version;
+  name: antivirus-health-win
+  description: Anti-virus health should be 'Good' to be compliant
+  query: select case when antivirus='Good' then 1 else 0 end as compliant from windows_security_center;
   support:
     platforms:
       - windows
+---
+apiVersion: v1
+kind: query
+spec:
+  name: antispyware-health-win
+  description: Anti-spyware health should be 'Good' to be compliant
+  query: select case when antispyware='Good' then 1 else 0 end as compliant from windows_security_center;
+  support:
+    platforms:
+      - windows
+---
+

@@ -15,9 +15,12 @@ spec:
     - query: auto-update-enabled-win
       interval: 1800
       snapshot: true
-    # - query: os-up-to-date-win
-    #   interval: 1800
-    #   snapshot: true
+    - query: antivirus-health-win
+      interval: 1800
+      snapshot: true
+    - query: antispyware-health-win
+      interval: 1800
+      snapshot: true
   targets:
     labels:
       - MS Windows

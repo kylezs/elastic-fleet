@@ -12,9 +12,9 @@ spec:
     - query: password-manager-installed-dar
       interval: 1800
       snapshot: true
-    # - query: screenlock-enabled-dar
-    #   interval: 1800
-    #   snapshot: true
+    - query: screenlock-enabled-dar
+      interval: 1800
+      snapshot: true
     - query: os-auto-update-enabled-dar
       interval: 1800
       snapshot: true

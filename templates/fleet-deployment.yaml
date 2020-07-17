@@ -60,7 +60,11 @@ spec:
                 secretKeyRef:
                   name: {{ template "kolide-fleet.fullname" . }}
                   key: fleet.mysql.password
-            # must be false for Load Balancer use
+            - name: KOLIDE_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "kolide-fleet.fullname" . }}
+                  key: fleet.redis.password
             - name: KOLIDE_SERVER_TLS
               value: "true"
           securityContext:

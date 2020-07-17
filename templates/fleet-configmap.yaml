@@ -21,12 +21,10 @@ data:
       address: {{ .Release.Name }}-redis-master:6379
       cluster.slaveCount: 0
       master.persistence.enabled: false
-      usePassword: {{ .Values.redis.usePassword }}
     server:
       address: 0.0.0.0:8080
       cert: /etc/pki/fleet/tls.crt
       key: /etc/pki/fleet/tls.key
-      # default false because load balancer does not require it
       tls: {{ default false .Values.fleet.server.tls }}
       # tlsprofile: modern
       url_prefix: ""

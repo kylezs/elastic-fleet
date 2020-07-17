@@ -1,5 +1,4 @@
 # Default values for elastic-fleet.
-# This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
@@ -60,7 +59,7 @@ certs:
 
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 8080
 
 resources: {}
@@ -72,10 +71,6 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 
 fleet:
-  # to be handled by secrets
-  # auto generated
-  # auth:
-  #   jwt_key: <placeholder for secret>
   logging:
     debug: false
     json: true
@@ -105,11 +100,11 @@ redis:
   master:
     persistence:
       enabled: false
-  usePassword: false
+  # passed in by the secret values
+  usePassword: true
   podLabels:
     role: fleet-backend
-  # this may break some other stuff
-  # networkPolicy.enabled: true
+  networkPolicy.enabled: true
 
 elasticsearch:
   replicas: 1
@@ -166,7 +161,7 @@ elasticsearch:
 
 kibana:
   service:
-    type: NodePort
+    type: ClusterIP
   elasticsearchHosts: http://elasticsearch-master:9200/
   # use this custom image, only way to use plugins as of writing
   image: docker.io/kylezs/kibana-elastalert
@@ -229,7 +224,7 @@ elastalert:
 # Used to send emails from elastalert
 #NB: username and password comes from values.secret.yaml
 smtp:
-  host: smpt.example.com
+  host: smtp.example.com
   # Must use 465 with the currently used version of elastalert
   port: 465
   useTLS: true
