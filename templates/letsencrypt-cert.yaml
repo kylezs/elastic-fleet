@@ -1,10 +1,13 @@
+# Depending on values.yaml this will be staging or production
+---
+{{- if ne .Values.certs.mode "dev" }}
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: fixpanel-staging-cert
+  name: elastic-fleet-tls-cert
 spec:
-  # Secret names are always required.
-  secretName: letsencrypt-staging-tls
+  # Secret names are always required
+  secretName: {{ .Values.certs.certName }}
   duration: 2160h # 90d
   renewBefore: 360h # 15d
   organization:
@@ -12,16 +15,22 @@ spec:
   usages:
     - server auth
     - client auth
-  # At least one of a DNS Name, URI, or IP address is required.
   dnsNames:
-    - fixpanel.org
-    - fleet.fixpanel.org
+    {{- range .Values.certs.dnsNames }}
+    - {{ . | quote }}
+    {{- end }}
   # Issuer references are always required.
   issuerRef:
+    {{- if eq .Values.certs.mode "prod" }}
+    name: letsencrypt-prod
+    {{- else if eq .Values.certs.mode "staging" }}
     name: letsencrypt-staging
+    {{- end }}
     # We can reference ClusterIssuers by changing the kind here.
     # The default value is Issuer (i.e. a locally namespaced Issuer)
     kind: ClusterIssuer
     # This is optional since cert-manager will default to this value however
     # if you are using an external issuer, change this to that issuer group.
     group: cert-manager.io
+{{- end }}
+---

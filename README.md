@@ -8,5 +8,6 @@ This repository is (mostly) a helm chart containing:
 - [Kibana](https://github.com/elastic/helm-charts/tree/master/kibana)
 - [Elastalert](https://github.com/bitsensor/elastalert) - We use a custom image to allow for editing alerts from Kibana UI
 
+
 Agent:
 - [Kolide Launcher](https://github.com/kolide/launcher)

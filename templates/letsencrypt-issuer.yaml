@@ -1,19 +1,31 @@
+---
+{{- if ne .Values.certs.mode "dev" }}
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
+  {{- if eq $.Values.certs.mode "staging" }}
   name: letsencrypt-staging
+  {{- else if eq $.Values.certs.mode "prod" }}
+  name: letsencrypt-prod
+  {{- end }}
 spec:
   acme:
     # You must replace this email address with your own.
     # Let's Encrypt will use this to contact you about expiring
     # certificates, and issues related to your account.
-    email: fixpanel@alais.org
+    email: {{ .Values.certs.issuer.email }}
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       # Secret resource that will be used to store the account's private key.
+      {{- if eq .Values.certs.mode "staging" }}
       name: letsencrypt-staging
+      {{- else if eq .Values.certs.mode "prod" }}
+      name: letsencrypt-prod
+      {{- end }}
     # Add a single challenge solver, HTTP01 using nginx
     solvers:
       - http01:
           ingress:
             class: nginx
+{{- end }}
+---
