@@ -1,7 +1,7 @@
 # Setting up SMTP
 In order for Elastalert to send alerts via email, it must be able to connect to an SMTP server. 
 
-You will also need SMTP enabled on the fleet server to enable some features like having multiple users. This is important so not everyone has admin privileges.
+You will also need SMTP enabled on the fleet server to enable some features like user management.
 
 **NOTE: On Linode, the mail ports 25, 465 and 587 are blocked by default for new users. You may have to ask them to open the ports.**
 
@@ -45,7 +45,7 @@ You must enable SMTP in Fleet to enable the user management functionality (e.g. 
 1. Sign in as an admin user
 2. Click admin on the left sidebar, and then App Settings
 3. Scroll to the SMTP and enter details
-![Fleet SMTP](./images/FleetSMTP.png)
+![Fleet SMTP](../images/FleetSMTP.png)
 4. Click 'Update Settings' at the bottom of the page. 
 
-If everything is configured correctly you should get a success message at top of screen and SMTP Options should say `Status: CONFIGURED` as in the image. 
+If everything is configured correctly you should get a success message at top of screen and SMTP Options should say `Status: CONFIGURED` as in the image.

@@ -18,7 +18,6 @@ A domain name is required for setting up a [kolide launcher package](packaging-l
 
 
 6. Setting up the Load Balancer + Ingress Controller
-We set up an Ingress in order to route traffic to each user facing application (Kibana and Kolide fleet). It also allows us to manage TLS in a central location, and means we don't need to use/remember a port when accessing our services (as we would if we just used NodePort), we can just use the domain.
 
 ```
 $ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
@@ -35,18 +34,17 @@ The Ingresses are already contained in [ingress.yaml](../templates/ingress.yaml)
 
 2. Certificates
 
-## NEEDS REVIEW AFTER REFACTOR
-The only certicate is managed by Cert Manager. Follow their [installation docs](https://cert-manager.io/docs/installation/kubernetes/) for creating the issuer.
->Note if you change the issuer name from `letsencrypt-prod` you will need to change the ref in [certificate-prod.yaml](../certificate-prod.yaml)
+The only certicate is managed by Cert Manager. Follow their [installation docs](https://cert-manager.io/docs/installation/kubernetes/) for creating the Custom Resource Definitions.
 
-For production you will need to use:
-`kubectl apply -f certificate-prod.yaml`
-It may take up to an hour for Let's Encrypt to sign the request.
+The cert-manager issuer and certificate are deployed alongside the rest of the application, from within the helm chart, using the cert-manager CRDs.
 
-8. Deploying the application
+Setting `certs.mode: dev` in values will disable this, so you can use self-signed certs.
+
+
+3. Deploying the application
 
 From inside the project root directory.
->**NOTE: You MUST use 'kf' as the deployment name since there are several dependencies on this name.**:
+
 ```
 helm install kf . --values values.yaml --values values.secret.yaml
 ```
