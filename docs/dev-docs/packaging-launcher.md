@@ -9,7 +9,8 @@ With launcher for MacOS there is a workaround to allow you to pass 'user' inform
 
 1. Encode the user information you want to show on the dashboard in base64. The example repo uses an email address.
 2. Attach this base64 encoded string to the start of the `launcher.pkg` e.g. `ZXhhbXBsZUBlbWFpbC5jb20=-launcher.darwin-launcher.pkg` 
->NB: This **must** be a standard format for the rest to work.
+would be the name of the package for the email `example@email.com`
+>NB: This **must** be a standard format for the following instructions to work.
 3. Using osquery decorators and the `kolide_json` table you can get the package name from osquery on each query.
 
 I recommend writing a script for this. You can simply put the base packages in a folder and have the script make a copy with the new package name.
@@ -18,7 +19,7 @@ I recommend writing a script for this. You can simply put the base packages in a
 SELECT value as "downloaded_name" FROM kolide_json where path="/private/etc/launcher/installer-info.json" and key="download_file";
 ```
 
-1. We can use Filebeat's processors to parse `downloaded_name` and send an email address field to elasticsearch.
+4. We can use Filebeat's processors to parse `downloaded_name` and send an email address field to elasticsearch.
    
 Excerpt from [filebeat-configmap.yaml](../templates/../../templates/filebeat-configmap.yaml)
 ```
@@ -42,3 +43,7 @@ filebeat.inputs:
 
 5. Send the package to the user whose email you associated with that install.
 6. See their email appear for each log entry!
+
+
+## Windows
+Coming soon...

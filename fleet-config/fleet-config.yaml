@@ -32,5 +32,8 @@ spec:
           config_refresh: 200
           pack_delimiter: ":"
           pack_refresh_interval: 900
+        decorators:
+          load:
+            - SELECT name as 'service_name' FROM services where lower(name) like 'launcher%svc';
 ---
 
