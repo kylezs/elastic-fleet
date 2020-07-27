@@ -40,24 +40,6 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1000
 
-# controls which certs are deployed/used by cert manager
-certs:
-  # May change depending on if using self-signed or letsencrypt staging/prod
-  certName: kolide-fleet-tls
-  # staging, dev, prod
-  mode: dev
-  # Include root domain and any subdomains used, used by certs
-  dnsNames:
-    - example.com
-    - fleet.example.com
-  # Used by ingresses, to direct traffic to particular subdomains, and terminate
-  # certs
-  dnsSubdomains:
-    kibana: example.com
-    fleet: fleet.example.com
-  issuer:
-    # gets notifications of expiring certs
-    email: example@mail.com
 
 
 service:
@@ -81,6 +63,26 @@ fleet:
     tls: true
   filesystem:
     result_volume: /var/log/fleet
+
+# controls which certs are deployed/used by cert manager
+certs:
+  # May change depending on if using self-signed or letsencrypt staging/prod
+  certName: kolide-fleet-tls
+  # staging, dev, prod
+  mode: dev
+  # Include root domain and any subdomains used, used by certs
+  dnsNames:
+    - example.com
+    - fleet.example.com
+  # Used by ingresses, to direct traffic to particular subdomains, and terminate
+  # certs
+  dnsSubdomains:
+    kibana: example.com
+    fleet: fleet.example.com
+  issuer:
+    # gets notifications of expiring certs
+    email: example@mail.com
+
 
 mysql:
   # These come from values.secret.yaml (the actual creds will not be in

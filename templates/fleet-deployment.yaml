@@ -8,14 +8,14 @@ metadata:
     release: "{{ .Release.Name }}"
     {{- include "kolide-fleet.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.fleet.replicaCount }}
   selector:
     matchLabels:
       {{- include "kolide-fleet.selectorLabels" . | nindent 6 }}
       app: kolide-fleet
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
+    {{- with .Values.fleet.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -23,13 +23,13 @@ spec:
         {{- include "kolide-fleet.selectorLabels" . | nindent 8 }}
         app: kolide-fleet
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.fleet.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "kolide-fleet.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.fleet.podSecurityContext | nindent 8 }}
       volumes:
         - name: fleet-configuration
           configMap:
@@ -38,7 +38,7 @@ spec:
           emptyDir: {}
         - name: fleet-tls
           secret:
-            secretName: {{ .Values.certs.certName }}
+            secretName: {{ .Values.fleet.certs.certName }}
         - name: filebeat-configuration
           configMap:
             name: filebeat-config
@@ -68,9 +68,9 @@ spec:
             - name: KOLIDE_SERVER_TLS
               value: "true"
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml .Values.fleet.securityContext | nindent 12 }}
+          image: "{{ .Values.fleet.image.repository }}:{{ .Values.fleet.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.fleet.image.pullPolicy }}
           args:
             - "fleet"
             - "serve"
@@ -81,7 +81,7 @@ spec:
               containerPort: 8080
               protocol: TCP
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.fleet.resources | nindent 12 }}
           volumeMounts:
             - name: fleet-configuration
               readOnly: true
