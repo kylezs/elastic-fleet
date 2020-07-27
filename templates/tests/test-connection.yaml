@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "kolide-fleet.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "kolide-fleet.fullname" . }}:{{ .Values.fleet.service.port }}']
   restartPolicy: Never

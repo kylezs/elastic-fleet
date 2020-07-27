@@ -12,7 +12,7 @@ spec:
   ttlSecondsAfterFinished: 60
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
+    {{- with .Values.fleet.podAnnotations }}
       annotations:
         "helm.sh/hook": post-install, post-upgrade
         "helm.sh/hook-weight": "0"
@@ -46,8 +46,8 @@ spec:
                   name: {{ template "kolide-fleet.fullname" . }}
                   key: fleet.mysql.password
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            {{- toYaml .Values.fleet.securityContext | nindent 12 }}
+          image: "{{ .Values.fleet.image.repository }}:{{ .Values.fleet.image.tag | default .Chart.AppVersion }}"
           args:
             - "fleet"
             - "prepare"

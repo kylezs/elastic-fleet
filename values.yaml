@@ -1,58 +1,7 @@
 # Default values for elastic-fleet.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
 
-image:
-  repository: kolide/fleet
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
-
-args:
-  - "--config"
-  - "/etc/fleet/config.yml"
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
-podAnnotations:
-  seccomp.security.alpha.kubernetes.io/pod: runtime/default
-
-podSecurityContext: {}
-
-securityContext:
-  capabilities:
-    # drop the default linux superuser capabilities
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
-
-
-
-service:
-  type: ClusterIP
-  port: 8080
-
-resources: {}
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 1
-  targetCPUUtilizationPercentage: 80
 
 fleet:
   logging:
@@ -63,6 +12,55 @@ fleet:
     tls: true
   filesystem:
     result_volume: /var/log/fleet
+  replicaCount: 1
+  image:
+    repository: kolide/fleet
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+  args:
+    - "--config"
+    - "/etc/fleet/config.yml"
+
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
+
+  podSecurityContext: {}
+
+  securityContext:
+    capabilities:
+      # drop the default linux superuser capabilities
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
 
 # controls which certs are deployed/used by cert manager
 certs:

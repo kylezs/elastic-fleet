@@ -38,7 +38,7 @@ spec:
           emptyDir: {}
         - name: fleet-tls
           secret:
-            secretName: {{ .Values.fleet.certs.certName }}
+            secretName: {{ .Values.certs.certName }}
         - name: filebeat-configuration
           configMap:
             name: filebeat-config
