@@ -11,7 +11,7 @@ This is a high-level architectural overview which explains how all the moving pa
 5. Elasticsearch will ingest these logs automatically.
 6. Kibana can then use the data stored in Elasticsearch for dashboards, queries, and alerts, using Elastalert.
 
-## Non functional architecture
+## Other Pieces...
 
 ### Cert Manager
 This project uses [cert-manager](https://cert-manager.io/docs/) to automatically rotate TLS certificates.

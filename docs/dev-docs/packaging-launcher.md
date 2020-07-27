@@ -46,4 +46,56 @@ filebeat.inputs:
 
 
 ## Windows
-Coming soon...
+For Windows you can use the `--identifier` flag on build of a launcher package. The limitation to this is that you can only build Windows packages on Windows, due to the dependency on WiX toolset.
+
+1. Encode the email in base64.
+`ZXhhbXBsZUBlbWFpbC5jb20=` would be the encoding for `example@email.com`
+2. Strip any `=` characters from the base64 string. Becomes `ZXhhbXBsZUBlbWFpbC5jb20`. This is because a valid identifier cannot have any `=`s in it.
+3. Prepend a dummy character. Becomes `DZXhhbXBsZUBlbWFpbC5jb20`. This is because the first character of the identifier will be capitalised. 
+4. Build the launcher package using the custom identifier e.g. for `example@email.com`
+```
+.\package-builder.exe make —-hostname=<host_name> --enroll_secret=<enroll_secret> --identifier=DZXhhbXBsZUBlbWFpbC5jb20
+```
+5. Add a decorator (targetting windows), to get the service name.
+```
+SELECT name as 'service_name' FROM services WHERE lower(name) LIKE 'launcher%svc';
+```
+> The identifer is used to set the service name in format: `LauncherIdentifierSvc`
+
+6. Setup filebeat processors to translate this encoding.
+```
+- dissect:
+    tokenizer: "Launcher%{base64emailWin}Svc"
+    field: "decorations.service_name"
+    target_prefix: ""
+- script:
+    lang: javascript
+    id: correctb64padding
+    source: >
+      function process(event) {
+        var base64emailWithDummy = event.Get('base64emailWin')
+        var base64email = base64emailWithDummy.slice(1)
+        var lenB64email = base64email.length;
+        var paddingLen = (4 - (lenB64email % 4)) % 4
+        var i;
+        for (i = 0; i < paddingLen; i++) {
+          base64email = base64email + "=";
+        }
+        event.Put('base64emailWinAfter', base64email)
+      }
+- decode_base64_field:
+    field:
+      from: "base64emailWinAfter"
+      to: "email"
+    ignore_missing: true
+    fail_on_error: false
+```
+> The script part of this:
+> 1. Strips the the dummy letter
+> 2. Calculates the length of padding required (proper base64 must be a length that is a multiple of 4), else decoding fails.
+> 3. Add the padding and then put a new field in the document.
+
+
+## Notes
+- You can use filebeats `if then` construct to use the processors for Mac and Windows together, to set a single `email` field for both OSs.
+- Use `drop_fields` to drop the fields created during the intermediate steps

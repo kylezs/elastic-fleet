@@ -15,3 +15,5 @@ Queries are stored in [fleet-config](../fleet-config) under their respective ker
 ## UI - Less recommended
 You can also add and update queries and packs using the Fleet UI.
 
+## Setting up SMTP
+[See here](smtp.md)

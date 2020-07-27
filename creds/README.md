@@ -9,6 +9,6 @@ sh generate-es-certs.sh
 sh generate-kibana-enckey.sh
 ```
 
-The second command will create self-signed certs for transport layer TLS.
+The first command will create self-signed certs for transport layer TLS.
 
-To run the last script will require Docker to be running, to create a container that will randomise an encryption key.
+To run the second script requires Docker to be running on your local machine, to create a container that will randomise an encryption key that will be used as the encryption key for Kibana.

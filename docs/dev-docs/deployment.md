@@ -40,6 +40,8 @@ The cert-manager issuer and certificate are deployed alongside the rest of the a
 
 Setting `certs.mode: dev` in values will disable this, so you can use self-signed certs.
 
+## Setting up SMTP
+[Go here](smtp.md)
 
 3. Deploying the application
 
@@ -53,5 +55,3 @@ If you make changes to the application, you can upgrade with:
 helm upgrade kf . --values values.yaml --values values.secret.yaml
 ```
 
-## Setting up SMTP
-[Go here](smtp.md)
