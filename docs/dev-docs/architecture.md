@@ -16,5 +16,6 @@ This is a high-level architectural overview which explains how all the moving pa
 ### Cert Manager
 This project uses [cert-manager](https://cert-manager.io/docs/) to automatically rotate TLS certificates.
 
-### Load Balancer - Add to the digram
+### Load Balancer
+In production it is best to use a Load Balancer and ingress controller (ingresses in this repo are written for nginx ingress controller). 
 It also uses a Load Balancer which receives *all* traffic, and then directs it to the appropriate service (Fleet or Kibana) 
