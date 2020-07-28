@@ -20,9 +20,11 @@ spec:
         - name: elastalert-config
           configMap:
             name: elastalert-configmap
-        - name: elastalert-rules
-          configMap:
-            name: elastalert-rules-configmap
+        # Can not add new rules via UI if this is used. since
+        # configmaps are readonly
+        # - name: elastalert-rules
+        #   configMap:
+        #     name: elastalert-rules-configmap
         - name: smtp-auth
           secret:
             secretName: smtp-auth-secret

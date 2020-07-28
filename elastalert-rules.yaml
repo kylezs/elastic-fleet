@@ -1,0 +1,19 @@
+# Currently not used in the elastalert deployment,
+# since configmaps are mounted as readonly, you can't add new rules via the UI
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elastalert-rules-configmap
+data:
+  match_any.yaml: |
+    es_host: elasticsearch-master
+    es_port: 9200
+    name: Test rule
+    type: any
+    index: filebeat-*
+    alert:
+    - "email"
+    email:
+    - "example@mail.com"
+---
+

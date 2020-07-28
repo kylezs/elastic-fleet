@@ -11,3 +11,6 @@ This repository is (mostly) a helm chart containing:
 
 Agent:
 - [Kolide Launcher](https://github.com/kolide/launcher)
+
+## Documentation
+Find the documentation [here](docs/contents.md).
