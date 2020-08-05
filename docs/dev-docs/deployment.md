@@ -21,14 +21,21 @@ A domain name is required for setting up a [kolide launcher package](packaging-l
 
 ```
 $ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-$ helm install nginx-ingress stable/nginx-ingress --set controller.publishService.enabled=true
+$ helm install nginx-ingress stable/nginx-ingress --set controller.publishService.enabled=true 
 ```
+Add this to the end if you have an existing load balancer, then you'll need to manually point your load balancer to the nodes and correct ports for each protocol.
+
+`--set controller.service.type=NodePort` 
+
+And this if you wish to have static ports on your ingress-controller
+
+`--set controller.service.httpsPort.nodePort=31313 --set controller.service.httpPort.nodePort=31312`
 
 This should create a Load Balancer in whichever cloud provider you use, and its traffic will be routed to the nginx-ingress-controller within your cluster without extra configuration. 
 
 >Note that due to limitations of Kolide Fleet, TLS terminates at the Fleet server for all Fleet requests (both HTTPS and GRPCS) but TLS terminates at the Load Balancer for any requests to other services.
 
-The Ingresses are already contained in [ingress.yaml](../templates/ingress.yaml) and already contain reference to the production TLS cert, managed by Cert Manager.
+The Ingresses are already contained in [ingress.yaml](../templates/ingress.yaml) and already contain reference to the TLS cert, managed by Cert Manager.
 
 1. Create A records, one that will route to the Kolide Fleet server, and one that will route to the Kibana dashboard. Point both to the Load Balancer's IP (find the Load Balancer in your cloud provider). The Ingress controller handles the routing of requests.
 
@@ -38,7 +45,7 @@ The only certicate is managed by Cert Manager. Follow their [installation docs](
 
 The cert-manager issuer and certificate are deployed alongside the rest of the application, from within the helm chart, using the cert-manager CRDs.
 
-Setting `certs.mode: dev` in values will disable this, so you can use self-signed certs.
+Setting `certs.mode: dev` in `values.yaml` will disable this, so you can use self-signed certs.
 
 ## Setting up SMTP
 [Go here](smtp.md)
