@@ -1,3 +1,7 @@
+---
+title: Fixpanel Project
+---
+
 # Fixpanel Project
 
 > See [here](contents.md) for the elastic-fleet documentation.
