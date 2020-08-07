@@ -1,5 +1,7 @@
 # Kibana visualisations
 
+> This is likely already done for you, so you won't need to create new metrics.
+
 This outlines how you should create visualisations, in particular, metrics in Kibana, such that it's easy to determine compliance failures on endpoints. Most of the time your admin should have already setup these metrics.
 
 Much of this depends on if you [wrote the queries to the standard documented](writing-queries.md).
@@ -31,7 +33,7 @@ Firstly, we use the "Top Hit" aggregation, and use @timestamp as the "aggregate 
 
 **Buckets**
 
-We create buckets on a "Terms" aggregation and use field hostIdentifier. Any unique device identifier can be used here.
+We create buckets on a "Terms" aggregation and use field hostIdentifier or, if configured like [here](../dev-docs/packaging-launcher.md), then email. Any unique device identifier can be used here.
 
 In combination with the metrics filter, the final result, asks a question like:
 "What is the latest snapshot.compliant result for each of the hosts?"
