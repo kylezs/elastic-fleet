@@ -14,3 +14,7 @@ Agent:
 
 ## Documentation
 Find the documentation [here](docs/contents.md).
+
+## Sponsorship
+
+This work was sponsored by the [ISC Project](https://www.iscproject.org/).

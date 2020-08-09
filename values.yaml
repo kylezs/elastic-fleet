@@ -1,8 +1,6 @@
 # Default values for elastic-fleet.
 # Declare variables to be passed into your templates.
 
-
-
 fleet:
   logging:
     debug: false
@@ -17,7 +15,7 @@ fleet:
     repository: kolide/fleet
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    tag: "3.1.0"
 
   args:
     - "--config"
@@ -81,7 +79,6 @@ certs:
     # gets notifications of expiring certs
     email: example@mail.com
 
-
 mysql:
   # These come from values.secret.yaml (the actual creds will not be in
   # the repo)
@@ -94,7 +91,6 @@ mysql:
   podLabels:
     # targetted by network policy
     role: fleet-backend
-
 
 redis:
   cluster:
@@ -155,7 +151,7 @@ elasticsearch:
           name: elastic-credentials
           key: username
   # even though we use http (behind the LB), tls is required for transport layer
-  # security 
+  # security
   secretMounts:
     - name: elastic-certificates
       secretName: elastic-certificates
@@ -184,16 +180,16 @@ kibana:
       path: /usr/share/kibana/config/certs
   kibanaConfig:
     kibana.yml: |
-        # If load balanced, don't need this
-        server.ssl:
-          enabled: false
-          # key: /usr/share/kibana/config/certs/elastic-certificate.pem
-          # certificate: /usr/share/kibana/config/certs/elastic-certificate.pem
-        xpack.security.enabled: true
-        xpack.security.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
-        xpack.encrypted_saved_objects.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
-        elastalert-kibana-plugin.serverHost: elastalert
-        elastalert-kibana-plugin.serverPort: 3030
+      # If load balanced, don't need this
+      server.ssl:
+        enabled: false
+        # key: /usr/share/kibana/config/certs/elastic-certificate.pem
+        # certificate: /usr/share/kibana/config/certs/elastic-certificate.pem
+      xpack.security.enabled: true
+      xpack.security.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
+      xpack.encrypted_saved_objects.encryptionKey: ${KIBANA_ENCRYPTION_KEY}
+      elastalert-kibana-plugin.serverHost: elastalert
+      elastalert-kibana-plugin.serverPort: 3030
   extraEnvs:
     - name: ELASTICSEARCH_PASSWORD
       valueFrom:
