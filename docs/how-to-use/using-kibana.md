@@ -1,6 +1,6 @@
 # How to use the Kibana Dashboard
 
-This document will briefly outline a clean process of using kibana.
+This document will briefly outline a clean process of using kibana. It will show you to to create a 'query' which will allow you to just search for the results of a particular group of emails.
 
 > If you are not seeing the results you expect, or any results at all, please ensure you have the time range set correctly. You can set this in the top right of the screen in Kibana, next to the search bar. It is advised to set from a week ago until now, using the "relative" time, based on the query schedule being used here.
 
