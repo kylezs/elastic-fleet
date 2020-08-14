@@ -34,6 +34,6 @@ spec:
           pack_refresh_interval: 900
         decorators:
           load:
-            - SELECT name as 'service_name' FROM services where lower(name) like 'launcher%svc';
+            - SELECT regex_match(data, '[^\\]+(?=\.msi$)', 0) as "downloaded_path" from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Kolide\Launcher\identifier\DownloadPath';
 ---
 
