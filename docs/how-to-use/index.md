@@ -6,6 +6,9 @@ Here we describe a possible way to gain value from this software, after everythi
 
 See [here](./using-kibana.md)
 
+
 ## For how to set up new visualisations/metrics in Kibana
 
-See [here](./kibana-visualisations.md)
+You may not need to use this if the visualisations have been set up.
+
+See [here](./../dev-docs/kibana-visualisations.mdkibana-visualisations.md)
