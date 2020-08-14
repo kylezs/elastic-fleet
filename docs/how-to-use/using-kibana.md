@@ -25,18 +25,18 @@ You can do this from the dashboard screen.
 2. In the searchbar you want to write a search query like:
 
 ```
-hostIdentifier : "<device_id1>"  or hostIdentifier : "<device_id1>" 
+email : "<email1>"  or email : "<email2>" 
 ```
 
-This search will now only show the dashboard for these hostIdentifiers (device UUID normally). Hence any unique device/user identifier could be used here.
+This search will now only show the dashboard for these emails. Hence any unique device/user identifier could be used here.
 
-You can keep adding `or hostIdentifier:"<another_deviceid>"` to add more hostIdentifiers to your list.
+You can keep adding `or email:"<another_email>"` to add more emails to your list.
 
 Continue until the result is down to the devices you want to see. Also ensure the time range is long enough. From now back to a week ago should be fine. 
 
-3. On the left you can save your query. Your saved queries will be viewable by other users, so make sure you name them well. Perhaps a format like: `yourusername - what is the query`
+1. On the left you can save your query. Your saved queries will be viewable by other users, so make sure you name them well. Perhaps a format like: `yourusername - what is the query`
 
-4. Now when you come back to view the dashboards, you can click your saved search and get only information on the devices contained in that search.
+2. Now when you come back to view the dashboards, you can click your saved search and get only information on the devices contained in that search.
 
 
 ## Updating a query
