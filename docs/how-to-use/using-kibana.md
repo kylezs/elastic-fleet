@@ -1,53 +1,59 @@
 # How to use the Kibana Dashboard
 
-This document will briefly outline a clean process of using kibana. It will show you to to create a 'query' which will allow you to just search for the results of a particular group of emails.
+This document will briefly outline a clean process of using kibana. It will show you to to create a 'filter' which will allow you to just search for the results of a particular set of emails.
 
 > If you are not seeing the results you expect, or any results at all, please ensure you have the time range set correctly. You can set this in the top right of the screen in Kibana, next to the search bar. It is advised to set from a week ago until now, using the "relative" time, based on the query schedule being used here.
 
-## Finding endpoint failures
+## How to save a new group of emails
 
-Once you have a set of visualisations set up. You can combine these into a group called a "dashboard" in Kibana.
+1. Enter into the table visualisation. And ensure the time frame (top right of screen) is set to a relative date 1 week ago. This may already be done for you. See screenshot:
 
-To see the dashboards page, it is the 4th item from the top, on the left sidebar.
+![timeframe](../images/timeFrame.png)
 
-Clicking on one of these dashboards will present you with the last status update from all the devices.
+2. Click "+ Add filter" just under the search bar at top of screen, on the left.
 
-In order to filter down to particular devices, for example, devices of people you manage, it is recommended you save a search containing only these device identifiers.
+3. Select the "email" field.
+   > Note there are a number of other email fields but you do not need to worry about these, select as in the screenshot below:
+   > ![email field filter](../images/emailFieldFilter.png)
 
-## How to save a new query
+You want to select just the field that says "email".
 
-You can do this from the dashboard screen.
+4. In the "Operator" drop down, select "is one of"
+5. Click "Select values", a drop down should popup allowing you to select emails from an autocomplete list. If you start typing an email, the list will narrow.
 
-1. Select a dashboard so you can see the full view, and the search bar at the top.
+After completion it should look something like:
 
-> Windows and Mac need to have separate dashboards because they use different queries.
+![Complete filter](../images/filterComplete.png).
 
-2. In the searchbar you want to write a search query like:
+6. Click "Save". NB: This does NOT save it for reuse yet. Check that you have the results you want before continuing, to save for easy reuse.
 
-```
-email : "<email1>"  or email : "<email2>" 
-```
+7. Click the save box on the left of the search bar, as in the screenshot.
 
-This search will now only show the dashboard for these emails. Hence any unique device/user identifier could be used here.
+![Saved queries dropdown](../images/savedQueries.png)
 
-You can keep adding `or email:"<another_email>"` to add more emails to your list.
+8. Click "Save current query". Provide a clear, identifiable name for the query. And a description if desired.
 
-Continue until the result is down to the devices you want to see. Also ensure the time range is long enough. From now back to a week ago should be fine. 
+9. Ensure "Include filters" and "Include time filter" are both enabled, as in the screenshot below:
 
-1. On the left you can save your query. Your saved queries will be viewable by other users, so make sure you name them well. Perhaps a format like: `yourusername - what is the query`
+![save query filters enabled](../images/filterAndTimeQuery.png)
 
-2. Now when you come back to view the dashboards, you can click your saved search and get only information on the devices contained in that search.
+Now the filter is saved for reuse.
 
+## Using the email group filter
 
-## Updating a query
+Simply open the savd queries menu and click the query name that you provided when creating it, as in the below screenshot:
+
+![use saved query](../images/useSavedQuery.png)
+
+## Updating the email group filter
 
 1. Click the Saved Queries button to the left of the search bar
 2. Open open the query you wish to update
-3. Change it to what you want
+3. Update the list of emails to show what you want
 4. Click the Saved Queries button to the left of the search bar again
 5. Save changes
 
-## Deleting a query
+## Deleting an email group filter
 
 1. Open the Saved Queries
 2. Hover the query you wish to delete
