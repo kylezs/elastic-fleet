@@ -6,7 +6,7 @@ This document will briefly outline a clean process of using kibana. It will show
 
 ## How to save a new group of emails
 
-1. Enter into the table visualisation. And ensure the time frame (top right of screen) is set to a relative date 1 week ago. This may already be done for you. See screenshot:
+1. Enter into the table dashboard. And ensure the time frame (top right of screen) is set to a relative date 1 week ago. This is likely already done for you. See screenshot:
 
 ![timeframe](../images/timeFrame.png)
 
@@ -14,26 +14,29 @@ This document will briefly outline a clean process of using kibana. It will show
 
 3. Select the "email" field.
    > Note there are a number of other email fields but you do not need to worry about these, select as in the screenshot below:
-   > ![email field filter](../images/emailFieldFilter.png)
+
+![email field filter](../images/emailFieldFilter.png)
 
 You want to select just the field that says "email".
 
-4. In the "Operator" drop down, select "is one of"
-5. Click "Select values", a drop down should popup allowing you to select emails from an autocomplete list. If you start typing an email, the list will narrow.
+5. In the "Operator" drop down, select "is one of"
+6. Click "Select values", a drop down should popup allowing you to select emails from an autocomplete list. If you start typing an email, the list will narrow.
 
 After completion it should look something like:
 
 ![Complete filter](../images/filterComplete.png).
 
-6. Click "Save". NB: This does NOT save it for reuse yet. Check that you have the results you want before continuing, to save for easy reuse.
+7. Click "Save".
 
-7. Click the save box on the left of the search bar, as in the screenshot.
+   > This does NOT save it for reuse yet. Check that you have the results you want before continuing, to save for easy reuse.
+
+8. Click the save box on the left of the search bar, as in the screenshot.
 
 ![Saved queries dropdown](../images/savedQueries.png)
 
-8. Click "Save current query". Provide a clear, identifiable name for the query. And a description if desired.
+9. Click "Save current query". Provide a clear, identifiable name for the query. And a description if desired.
 
-9. Ensure "Include filters" and "Include time filter" are both enabled, as in the screenshot below:
+10. Ensure "Include filters" and "Include time filter" are both enabled, as in the screenshot below:
 
 ![save query filters enabled](../images/filterAndTimeQuery.png)
 
