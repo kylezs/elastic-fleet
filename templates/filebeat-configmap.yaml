@@ -41,7 +41,7 @@ data:
               "action", "suricata.eve.timestamp", "input.type",
               "agent.ephemeral_id", "agent.hostname", "agent.id", "agent.version", "host.name",
               "log.offset", "unixTime", "restofpackagename", "decorations.downloaded_name",
-              "deocorations.downloaded_path", "base64email", "base64emailWin"]
+              "decorations.downloaded_path", "base64email", "base64emailWin"]
     output.elasticsearch:
       host: '${NODE_NAME}'
       hosts: 'http://elasticsearch-master:9200'

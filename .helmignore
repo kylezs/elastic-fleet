@@ -21,3 +21,11 @@
 .idea/
 *.tmproj
 .vscode/
+
+
+docs/
+fleet-config/
+elastalert/
+creds/
+containers/
+
